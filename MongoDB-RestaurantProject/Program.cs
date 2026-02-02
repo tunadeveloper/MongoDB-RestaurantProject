@@ -1,29 +1,39 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Settings;
+using MongoDB_RestaurantProject.Mapping;
+using MongoDB_RestaurantProject.Services.CategoryService;
+using MongoDB_RestaurantProject.Services.GenericService;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection(nameof(MongoDbSettings)));
+
+builder.Services.Configure<MongoDbSettings>(
+    builder.Configuration.GetSection(nameof(MongoDbSettings))
+);
+
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
     return new MongoClient(settings.ConnectionString);
 });
+
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
     var client = sp.GetRequiredService<IMongoClient>();
     return client.GetDatabase(settings.DatabaseName);
 });
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddAutoMapper(typeof(GeneralMapping));
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -34,10 +44,17 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

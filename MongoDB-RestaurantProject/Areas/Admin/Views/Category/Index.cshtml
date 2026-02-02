@@ -1,0 +1,31 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.CategoryDTOs
+@model List<ResultCategoryDTO>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>Kategori Listesi</h1>
+
+    <table>
+    <tr>
+        <th>Kategori ID</th>
+        <th>Kategori Adı</th>
+    </tr>
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
