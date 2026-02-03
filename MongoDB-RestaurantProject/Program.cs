@@ -1,6 +1,8 @@
+using FluentValidation;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Settings;
+using MongoDB_RestaurantProject.FluentValidation.Product;
 using MongoDB_RestaurantProject.Mapping;
 using MongoDB_RestaurantProject.Services.CategoryService;
 using MongoDB_RestaurantProject.Services.GenericService;
@@ -27,6 +29,8 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

@@ -28,13 +28,25 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             return View(result);
         }
 
-        public IActionResult CreateCategory() => View();
-
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryDTO dto)
         {
             var entity = _mapper.Map<Category>(dto);
             await _categoryService.CreateAsync(entity);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCategory(UpdateCategoryDTO dto)
+        {
+            var entity = _mapper.Map<Category>(dto);
+            await _categoryService.UpdateAsync(entity);
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> DeleteCategory(string id)
+        {
+            await _categoryService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
     }
