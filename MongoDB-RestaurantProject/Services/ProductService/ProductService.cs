@@ -39,6 +39,13 @@ namespace MongoDB_RestaurantProject.Services.ProductService
                 .ToListAsync();
         }
 
+        public async Task<List<Product>> GetListByCategoryAsync(string categoryId)
+        {
+            return await _mongoCollection
+                .Find(x=>x.CategoryId == categoryId)
+                .ToListAsync();
+        }
+
         public async Task UpdateAsync(Product entity)
         {
             var filter = Builders<Product>.Filter.Eq(x => x.Id, entity.Id);

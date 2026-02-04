@@ -109,7 +109,7 @@
                             <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Kategori Adı
                             </label>
-                            <input type="text" name="Name" id="categoryName" required
+                            <input type="text" name="CategoryName" id="categoryName" required
                                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4 transition-colors"
                                    placeholder="Örn: İçecekler, Ana Yemekler...">
                         </div>
@@ -153,7 +153,7 @@
                             <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Kategori Adı
                             </label>
-                            <input type="text" name="Name" id="categoryName" required
+                            <input type="text" name="CategoryName" id="categoryName" required
                                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4 transition-colors"
                                    placeholder="Örn: İçecekler, Ana Yemekler...">
                         </div>
@@ -182,11 +182,12 @@
         createModal.classList.remove('hidden');
     }
 
-    function openUpdateModal(id, name) {
+        function openUpdateModal(id, name) {
         updateModal.querySelector('input[name="Id"]').value = id;
-        updateModal.querySelector('input[name="Name"]').value = name;
+        updateModal.querySelector('input[name="CategoryName"]').value = name;
         updateModal.classList.remove('hidden');
     }
+
 
     function closeModal() {
         createModal.classList.add('hidden');
@@ -194,9 +195,10 @@
     }
 
 
-    document.addEventListener('keydown', function(event) {
-        if (event.key === "Escape" && !modal.classList.contains('hidden')) {
+       document.addEventListener('keydown', function (event) {
+        if (event.key === "Escape") {
             closeModal();
         }
     });
+
 </script>

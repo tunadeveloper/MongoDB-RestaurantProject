@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.ProductDTOs;
+using MongoDB_RestaurantProject.Services.CategoryService;
 using MongoDB_RestaurantProject.Services.ProductService;
 using System.Threading.Tasks;
 
@@ -13,17 +14,24 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IProductService productService, IMapper mapper, ICategoryService categoryService)
         {
             _productService = productService;
             _mapper = mapper;
+            _categoryService = categoryService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string categoryId)
         {
-            var list = await _productService.GetListAsync();
+            var list = string.IsNullOrEmpty(categoryId)
+                ? await _productService.GetListAsync()
+                : await _productService.GetListByCategoryAsync(categoryId);
+
             var result = _mapper.Map<List<ResultProductDTO>>(list);
+            ViewBag.Categories = await _categoryService.GetListAsync();
+            ViewBag.SelectedCategory = categoryId;
             return View(result);
         }
 
