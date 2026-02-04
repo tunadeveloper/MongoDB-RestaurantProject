@@ -1,6 +1,6 @@
 ﻿namespace MongoDB_RestaurantProject.Context.Entities
 {
-    public class Chefs:BaseEntity
+    public class Chef:BaseEntity
     {
         public string NameSurname { get; set; }
         public string PositionName { get; set; }

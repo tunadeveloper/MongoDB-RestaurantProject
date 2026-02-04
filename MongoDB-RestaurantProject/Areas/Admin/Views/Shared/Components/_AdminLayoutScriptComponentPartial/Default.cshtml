@@ -1,0 +1,26 @@
+﻿<script>
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const mobileOverlay = document.getElementById('mobile-sidebar-overlay');
+
+    function toggleMobileSidebar() {
+        mobileSidebar.classList.toggle('-translate-x-full');
+        if (mobileOverlay.classList.contains('hidden')) {
+            mobileOverlay.classList.remove('hidden');
+        } else {
+            mobileOverlay.classList.add('hidden');
+        }
+    }
+
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const themeIcon = themeToggleBtn.querySelector('span');
+
+    themeToggleBtn.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+
+        if (document.documentElement.classList.contains('dark')) {
+            themeIcon.textContent = 'light_mode';
+        } else {
+            themeIcon.textContent = 'dark_mode';
+        }
+    });
+</script>

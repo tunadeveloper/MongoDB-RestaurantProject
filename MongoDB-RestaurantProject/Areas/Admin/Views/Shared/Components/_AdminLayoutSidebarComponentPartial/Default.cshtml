@@ -1,0 +1,233 @@
+﻿<div id="mobile-sidebar-overlay" class="fixed inset-0 bg-black/50 z-40 hidden transition-opacity" onclick="toggleMobileSidebar()"></div>
+
+<aside id="mobile-sidebar" class="fixed inset-y-0 left-0 w-64 sidebar-gradient text-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl md:hidden">
+    <div class="h-20 flex items-center px-6 border-b border-white/10">
+        <div class="flex items-center gap-3">
+            <div class="bg-white text-primary p-2 rounded-lg">
+                <span class="material-icons-round text-xl">restaurant_menu</span>
+            </div>
+            <span class="text-2xl font-display font-bold tracking-wide">FOODU</span>
+        </div>
+        <button onclick="toggleMobileSidebar()" class="ml-auto text-white/80 hover:text-white">
+            <span class="material-icons-round">close</span>
+        </button>
+    </div>
+    <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl bg-white/10 text-white font-medium shadow-sm border border-white/10">
+            <span class="material-icons-outlined mr-3">dashboard</span> Dashboard
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">restaurant_menu</span> Menü (Yemekler)
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">category</span> Kategoriler
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">event_seat</span> Rezervasyonlar
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">mail</span> Mesajlar
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">article</span> Bloglar
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">rate_review</span> Yorumlar
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">subscriptions</span> Aboneler (Bülten)
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">reviews</span> Ürün İncelemesi
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">emoji_emotions</span> Şefler
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">campaign</span> Tanıtımlar
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">local_offer</span> Teklifler
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">feedback</span> Geri Dönüşler (Feedback)
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">photo_library</span> Galeri
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">call</span> İletişim Bilgileri
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">info</span> Hakkımızda
+        </a>
+
+        <a href="#" class="flex items-center px-4 py-3 rounded-xl text-white/80 hover:bg-white/10 hover:text-white transition">
+            <span class="material-icons-outlined mr-3">manage_accounts</span> Kullanıcılar
+        </a>
+
+    </nav>
+
+    <div class="p-4 border-t border-white/10">
+        <div class="flex items-center gap-3">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR8hfSU0ShiOfulsnW14psDkU-e0lTWKFX8utMp0CwON2O5rUdxoJluGCgRsbLAgEHDR6mB12K8J3nOtIa-EkfzuRWr-fmppyWHmxxtii5Q5hFsW2fwO9OfEs4F2l8F7zfuWf9UMbWRIxoz_UTTRqGmNZzurfOz2FcubJxZsodBgbP7Um6i4Ck_o8rqlZCyXNMqETafQsfcwPwbYzAqPdWyEt6SPj6QxHOYxE6T-0wlCC9xBLTESeT7ssryrIq-aaNv3Z9VuquoIs" alt="Admin" class="w-10 h-10 rounded-full border-2 border-white/20">
+            <div>
+                <p class="text-sm font-medium">Chef Antonio</p>
+                <p class="text-xs text-white/60">Admin</p>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<aside class="w-20 hidden md:flex flex-col items-center py-8 z-20 shadow-xl sidebar-gradient text-white transition-all duration-300">
+    <div class="mb-10 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg text-primary shrink-0">
+        <span class="material-icons-outlined text-3xl">restaurant_menu</span>
+    </div>
+
+    <nav class="flex-1 w-full flex flex-col gap-3 items-center">
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">dashboard</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Dashboard
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">restaurant_menu</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Menü
+            </span>
+        </a>
+
+        <a href="/Admin/Category/Index" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">category</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Kategoriler
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">event_available</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Rezervasyonlar
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">mail</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Mesajlar
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">article</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Bloglar
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">comment</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Yorumlar
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">subscriptions</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Aboneler
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">reviews</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Ürün İncelemesi
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">restaurant</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Şefler
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">campaign</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Tanıtımlar
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">local_offer</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Teklifler
+            </span>
+        </a>
+
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20
+       transition opacity-70 hover:opacity-100 group relative">
+            <span class="material-icons-outlined text-[24px]">feedback</span>
+            <span class="absolute left-14 bg-gray-900 text-white text-xs px-2 py-1 rounded
+          opacity-0 group-hover:opacity-100 transition whitespace-nowrap pointer-events-none">
+                Geri Dönüşler
+            </span>
+        </a>
+
+    </nav>
+
+
+    <div class="flex flex-col gap-4 mt-auto">
+        <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition">
+            <span class="material-icons-outlined">dark_mode</span>
+        </button>
+        <a href="#" class="w-10 h-10 flex items-center justify-center rounded-xl hover:bg-white/20 transition">
+            <span class="material-icons-outlined">settings</span>
+        </a>
+    </div>
+</aside>
