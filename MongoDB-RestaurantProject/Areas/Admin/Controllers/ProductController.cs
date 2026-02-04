@@ -48,5 +48,14 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             await _productService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeCurrentStatus(string id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+            product.IsAvailable = !product.IsAvailable;
+            await _productService.UpdateAsync(product);
+            return RedirectToAction("Index");
+        }
     }
 }
