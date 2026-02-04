@@ -6,6 +6,7 @@ using MongoDB_RestaurantProject.FluentValidation.Product;
 using MongoDB_RestaurantProject.Mapping;
 using MongoDB_RestaurantProject.Services.CategoryService;
 using MongoDB_RestaurantProject.Services.GenericService;
+using MongoDB_RestaurantProject.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,7 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 });
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();

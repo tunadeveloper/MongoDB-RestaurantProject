@@ -2,5 +2,6 @@
 {
     public class CreateGalleryDTO
     {
+        public string ImageUrl { get; set; }
     }
 }

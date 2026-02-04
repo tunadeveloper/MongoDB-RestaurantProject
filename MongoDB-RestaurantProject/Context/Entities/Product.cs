@@ -7,6 +7,7 @@ namespace MongoDB_RestaurantProject.Context.Entities
     {
         public string ProductName { get; set; }
         public string Description { get; set; }
+        public string ImageUrl { get; set; }
         public string Weight { get; set; }
         public string Dimensions { get; set; }
         public float PriceHalf { get; set; }

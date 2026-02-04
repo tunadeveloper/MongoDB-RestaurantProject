@@ -7,7 +7,7 @@ namespace MongoDB_RestaurantProject.FluentValidation.CategoryValidators
     {
         public CreateCategoryValidator()
         {
-            RuleFor(x => x.Name)
+            RuleFor(x => x.CategoryName)
             .NotEmpty().WithMessage("Kategori adı boş olamaz.")
             .MinimumLength(3).WithMessage("Kategori adı en az 3 karakter olmalıdır.");
         }

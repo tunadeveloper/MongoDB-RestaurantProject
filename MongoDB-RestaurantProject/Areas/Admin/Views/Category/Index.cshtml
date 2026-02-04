@@ -48,7 +48,7 @@
                                             <span class="material-icons-outlined text-xl">restaurant</span>
                                         </div>
                                         <div>
-                                            <h4 class="font-bold text-gray-900 dark:text-white text-base">@item.Name</h4>
+                                        <h4 class="font-bold text-gray-900 dark:text-white text-base">@item.CategoryName</h4>
                                             <span class="text-xs text-gray-400">Menü Kategorisi</span>
                                         </div>
                                     </div>
@@ -58,7 +58,7 @@
                                 </td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
-                                    <button onclick="openUpdateModal('@item.Id', '@item.Name')"
+                                    <button onclick="openUpdateModal('@item.Id', '@item.CategoryName')"
                                             class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                                             title="Düzenle">
                                         <span class="material-icons-outlined text-lg">edit</span>

@@ -2,5 +2,6 @@
 {
     public class CreateNewsletterDTO
     {
+        public string Email { get; set; }
     }
 }

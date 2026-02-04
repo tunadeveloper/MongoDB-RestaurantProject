@@ -10,7 +10,5 @@ namespace MongoDB_RestaurantProject.Context.Entities
         public string ImageUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public List<string> Tags { get; set; }
-
-        public List<BlogComment> Comments { get; set; }
     }
 }

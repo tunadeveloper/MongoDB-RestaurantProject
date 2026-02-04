@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.DataTransferObject.BlogDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.CategoryDTOs;
+using MongoDB_RestaurantProject.DataTransferObject.ProductDTOs;
 
 namespace MongoDB_RestaurantProject.Mapping
 {
@@ -8,14 +10,17 @@ namespace MongoDB_RestaurantProject.Mapping
     {
         public GeneralMapping()
         {
-            CreateMap<CreateCategoryDTO, Category>()
-             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Name));
+            CreateMap<CreateCategoryDTO, Category>();
+            CreateMap<UpdateCategoryDTO, Category>();
+            CreateMap<Category, ResultCategoryDTO>();
 
-            CreateMap<UpdateCategoryDTO, Category>()
-                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Name));
+            CreateMap<CreateBlogDTO, Blog>();
+            CreateMap<UpdateBlogDTO, Blog>();
+            CreateMap<ResultBlogDTO, Blog>();
 
-            CreateMap<Category, ResultCategoryDTO>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.CategoryName));
+            CreateMap<CreateProductDTO, Product>();
+            CreateMap<UpdateProductDTO, Product>();
+            CreateMap<Product, ResultProductDTO>();
         }
     }
 }
