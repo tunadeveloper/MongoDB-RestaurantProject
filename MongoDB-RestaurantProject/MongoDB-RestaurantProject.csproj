@@ -19,6 +19,12 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Services\MessageService\" />
+    <Folder Include="Services\ReservationService\" />
+    <Folder Include="Services\PromationService\" />
+    <Folder Include="Services\ProductReviewService\" />
+    <Folder Include="Services\OfferService\" />
+    <Folder Include="Services\NewsletterService\" />
   </ItemGroup>
 
 </Project>

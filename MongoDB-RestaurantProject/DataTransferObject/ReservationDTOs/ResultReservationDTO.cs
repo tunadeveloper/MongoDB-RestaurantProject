@@ -1,6 +1,6 @@
 ﻿namespace MongoDB_RestaurantProject.DataTransferObject.ReservationDTOs
 {
-    public class ResultResevationDTO
+    public class ResultReservationDTO
     {
         public string Id { get; set; }
         public string NameSurname { get; set; }

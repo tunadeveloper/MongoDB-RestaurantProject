@@ -1,0 +1,47 @@
+﻿using MongoDB.Driver;
+using MongoDB_RestaurantProject.Context.Entities;
+
+namespace MongoDB_RestaurantProject.Services.AdminService
+{
+    public class AdminService : IAdminService
+    {
+        private readonly IMongoCollection<Admin> _mongoCollection;
+
+        public AdminService(IMongoCollection<Admin> mongoCollection)
+        {
+            _mongoCollection = mongoCollection;
+        }
+
+        public async Task CreateAsync(Admin entity)
+        {
+            await _mongoCollection.InsertOneAsync(entity);
+        }
+
+        public async Task DeleteAsync(string id)
+        {
+            await _mongoCollection.DeleteOneAsync(x=>x.Id == id);
+        }
+
+        public async Task<Admin> GetByIdAsync(string id)
+        {
+            return
+                await _mongoCollection
+                .Find(x=>x.Id==id)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Admin>> GetListAsync()
+        {
+            return
+                await _mongoCollection
+                .Find(x => true)
+                .ToListAsync();
+        }
+
+        public async Task UpdateAsync(Admin entity)
+        {
+           var filter = Builders<Admin>.Filter.Eq(x=>x.Id, entity.Id);
+            await _mongoCollection.ReplaceOneAsync(filter, entity);
+        }
+    }
+}
