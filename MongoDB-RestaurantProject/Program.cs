@@ -4,9 +4,23 @@ using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Settings;
 using MongoDB_RestaurantProject.FluentValidation.Product;
 using MongoDB_RestaurantProject.Mapping;
+using MongoDB_RestaurantProject.Services.AboutService;
+using MongoDB_RestaurantProject.Services.AdminService;
+using MongoDB_RestaurantProject.Services.BlogCommentService;
+using MongoDB_RestaurantProject.Services.BlogService;
 using MongoDB_RestaurantProject.Services.CategoryService;
+using MongoDB_RestaurantProject.Services.ChefService;
+using MongoDB_RestaurantProject.Services.ContactInfoService;
+using MongoDB_RestaurantProject.Services.FeedbackService;
+using MongoDB_RestaurantProject.Services.GalleryService;
 using MongoDB_RestaurantProject.Services.GenericService;
+using MongoDB_RestaurantProject.Services.MessageService;
+using MongoDB_RestaurantProject.Services.NewsletterService;
+using MongoDB_RestaurantProject.Services.OfferService;
+using MongoDB_RestaurantProject.Services.ProductReviewService;
 using MongoDB_RestaurantProject.Services.ProductService;
+using MongoDB_RestaurantProject.Services.PromationService;
+using MongoDB_RestaurantProject.Services.ReservationService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +43,20 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IAboutService, AboutService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
+builder.Services.AddScoped<IBlogCommentService, BlogCommentService>();
+builder.Services.AddScoped<IChefService, ChefService>();
+builder.Services.AddScoped<IContactInfoService, ContactInfoService>();
+builder.Services.AddScoped<IFeedbackService, FeedbackService>();
+builder.Services.AddScoped<IGalleryService, GalleryService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<INewsletterSerivce, NewsletterService>();
+builder.Services.AddScoped<IOfferService, OfferService>();
+builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
+builder.Services.AddScoped<IPromationService, PromationService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
