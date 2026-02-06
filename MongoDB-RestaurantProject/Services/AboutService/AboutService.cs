@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.AboutService
 {
@@ -7,9 +9,10 @@ namespace MongoDB_RestaurantProject.Services.AboutService
     {
         private readonly IMongoCollection<About> _mongoCollection;
 
-        public AboutService(IMongoCollection<About> mongoCollection)
+        public AboutService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection =
+                database.GetCollection<About>(options.Value.AboutCollectionName);
         }
 
         public async Task CreateAsync(About entity)

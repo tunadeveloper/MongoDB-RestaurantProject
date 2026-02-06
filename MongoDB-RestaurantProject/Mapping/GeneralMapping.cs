@@ -36,7 +36,7 @@ namespace MongoDB_RestaurantProject.Mapping
             CreateMap<Product, ResultProductDTO>();
 
             CreateMap<CreateAboutDTO, About>();
-            CreateMap<UpdateAboutDTO, About>();
+            CreateMap<About, UpdateAboutDTO>();
             CreateMap<About, ResultAboutDTO>();
 
             CreateMap<CreateAdminDTO, Admin>();
