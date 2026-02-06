@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
-using MongoDB_RestaurantProject.DataTransferObject.ProductDTOs;
+using MongoDB_RestaurantProject.Context.Entities;
 
-namespace MongoDB_RestaurantProject.FluentValidation.Product
+namespace MongoDB_RestaurantProject.FluentValidation
 {
-    public class UpdateProductValidator:AbstractValidator<UpdateProductDTO>
+    public class ProductValidator : AbstractValidator<Product>
     {
-        public UpdateProductValidator()
+        public ProductValidator()
         {
             RuleFor(x => x.ProductName)
-           .NotEmpty().WithMessage("Ürün adı boş olamaz.")
-           .MaximumLength(100).WithMessage("Ürün adı 100 karakterden uzun olamaz.");
+            .NotEmpty().WithMessage("Ürün adı boş olamaz.")
+            .MaximumLength(100).WithMessage("Ürün adı 100 karakterden uzun olamaz.");
 
             RuleFor(x => x.Description)
                 .NotEmpty().WithMessage("Açıklama boş olamaz.")
@@ -31,5 +31,6 @@ namespace MongoDB_RestaurantProject.FluentValidation.Product
                 .NotNull().WithMessage("Malzemeler boş olamaz.")
                 .Must(list => list.Count > 0).WithMessage("En az 1 malzeme eklemelisiniz.");
         }
+     
     }
 }

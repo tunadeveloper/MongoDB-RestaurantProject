@@ -1,8 +1,8 @@
 using FluentValidation;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.Context.Settings;
-using MongoDB_RestaurantProject.FluentValidation.Product;
 using MongoDB_RestaurantProject.Mapping;
 using MongoDB_RestaurantProject.Services.AboutService;
 using MongoDB_RestaurantProject.Services.AdminService;
@@ -41,6 +41,45 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
+builder.Services.AddSingleton(sp =>
+{
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+
+    return new
+    {
+        About = db.GetCollection<About>(settings.AboutCollectionName),
+        Admin = db.GetCollection<Admin>(settings.AdminCollectionName),
+        Blog = db.GetCollection<Blog>(settings.BlogCollectionName),
+        BlogComment = db.GetCollection<BlogComment>(settings.BlogCommentCollectionName),
+        Chef = db.GetCollection<Chef>(settings.ChefCollectionName),
+        ContactInfo = db.GetCollection<ContactInfo>(settings.ContactInfoCollectionName),
+        Feedback = db.GetCollection<Feedback>(settings.FeedbackCollectionName),
+        Gallery = db.GetCollection<Gallery>(settings.GalleryCollectionName),
+        Message = db.GetCollection<Message>(settings.MessageCollectionName),
+        Newsletter = db.GetCollection<Newsletter>(settings.NewsletterCollectionName),
+        Offer = db.GetCollection<Offer>(settings.OfferCollectionName),
+        ProductReview = db.GetCollection<ProductReview>(settings.ProductReviewCollectionName),
+        Promation = db.GetCollection<Promation>(settings.PromationCollectionName),
+        Reservation = db.GetCollection<Reservation>(settings.ReservationCollectionName)
+    };
+});
+
+builder.Services.AddSingleton<IMongoCollection<About>>(sp => sp.GetRequiredService<dynamic>().About);
+builder.Services.AddSingleton<IMongoCollection<Admin>>(sp => sp.GetRequiredService<dynamic>().Admin);
+builder.Services.AddSingleton<IMongoCollection<Blog>>(sp => sp.GetRequiredService<dynamic>().Blog);
+builder.Services.AddSingleton<IMongoCollection<BlogComment>>(sp => sp.GetRequiredService<dynamic>().BlogComment);
+builder.Services.AddSingleton<IMongoCollection<Chef>>(sp => sp.GetRequiredService<dynamic>().Chef);
+builder.Services.AddSingleton<IMongoCollection<ContactInfo>>(sp => sp.GetRequiredService<dynamic>().ContactInfo);
+builder.Services.AddSingleton<IMongoCollection<Feedback>>(sp => sp.GetRequiredService<dynamic>().Feedback);
+builder.Services.AddSingleton<IMongoCollection<Gallery>>(sp => sp.GetRequiredService<dynamic>().Gallery);
+builder.Services.AddSingleton<IMongoCollection<Message>>(sp => sp.GetRequiredService<dynamic>().Message);
+builder.Services.AddSingleton<IMongoCollection<Newsletter>>(sp => sp.GetRequiredService<dynamic>().Newsletter);
+builder.Services.AddSingleton<IMongoCollection<Offer>>(sp => sp.GetRequiredService<dynamic>().Offer);
+builder.Services.AddSingleton<IMongoCollection<ProductReview>>(sp => sp.GetRequiredService<dynamic>().ProductReview);
+builder.Services.AddSingleton<IMongoCollection<Promation>>(sp => sp.GetRequiredService<dynamic>().Promation);
+builder.Services.AddSingleton<IMongoCollection<Reservation>>(sp => sp.GetRequiredService<dynamic>().Reservation);
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
@@ -59,8 +98,7 @@ builder.Services.AddScoped<IPromationService, PromationService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
-builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
-
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -73,9 +111,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapStaticAssets();
 
 app.UseEndpoints(endpoints =>

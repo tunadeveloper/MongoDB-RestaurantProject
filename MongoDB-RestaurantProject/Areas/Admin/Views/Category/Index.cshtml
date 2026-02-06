@@ -109,9 +109,11 @@
                             <label for="categoryName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Kategori Adı
                             </label>
-                            <input type="text" name="CategoryName" id="categoryName" required
+                            <input type="text" name="CategoryName" id="categoryName"
                                    class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4 transition-colors"
                                    placeholder="Örn: İçecekler, Ana Yemekler...">
+                            <span asp-validation-for="CategoryName"
+                                  class="text-red-500 text-sm mt-1"></span>
                         </div>
                     </div>
 
