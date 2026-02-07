@@ -1,0 +1,293 @@
+﻿@using MongoDB_RestaurantProject.Areas.Admin.Models
+@using MongoDB_RestaurantProject.DataTransferObject.ReservationDTOs
+@model ReservationListViewModel
+
+@{
+    ViewData["Title"] = "Rezervasyon Yönetimi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="flex-1 overflow-hidden relative h-[calc(100vh-100px)] flex flex-col md:flex-row gap-6 p-4 md:p-6 lg:p-8">
+
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="w-full md:w-64 shrink-0 flex flex-col gap-6 relative z-10">
+        <button onclick="openCreateModal()" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-primary/30 transition transform hover:scale-105">
+            <span class="material-icons-outlined">add_circle</span>
+            <span>Yeni Rezervasyon</span>
+        </button>
+
+        <div class="bg-surface-light dark:bg-card-dark rounded-3xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+            <nav class="space-y-1">
+                <button onclick="switchTab('all')" id="btn-all" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-colors bg-blue-50 text-primary dark:bg-blue-900/20 dark:text-blue-300">
+                    <div class="flex items-center gap-3"><span class="material-icons-outlined text-xl">list_alt</span>Tüm Kayıtlar</div>
+                    <span class="bg-white dark:bg-gray-700 text-primary dark:text-white py-0.5 px-2 rounded-md text-xs font-bold shadow-sm">@Model.AllReservations.Count</span>
+                </button>
+                <button onclick="switchTab('pending')" id="btn-pending" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-3"><span class="material-icons-outlined text-xl text-yellow-500">hourglass_empty</span>Bekleyenler</div>
+                    @if (Model.PendingReservations.Count > 0)
+                    {
+                        <span class="bg-yellow-100 text-yellow-700 py-0.5 px-2 rounded-md text-xs font-bold animate-pulse">@Model.PendingReservations.Count</span>
+                    }
+                </button>
+                <button onclick="switchTab('approved')" id="btn-approved" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-3"><span class="material-icons-outlined text-xl text-green-500">check_circle</span>Onaylananlar</div>
+                    @if (Model.ApprovedReservations.Count > 0)
+                    {
+                        <span class="bg-green-100 text-green-700 py-0.5 px-2 rounded-md text-xs font-bold">@Model.ApprovedReservations.Count</span>
+                    }
+                </button>
+                <button onclick="switchTab('cancelled')" id="btn-cancelled" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-3"><span class="material-icons-outlined text-xl text-red-500">cancel</span>İptal Edilenler</div>
+                    @if (Model.CancelledReservations.Count > 0)
+                    {
+                        <span class="bg-red-100 text-red-700 py-0.5 px-2 rounded-md text-xs font-bold">@Model.CancelledReservations.Count</span>
+                    }
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex-1 bg-surface-light dark:bg-card-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col overflow-hidden relative z-10">
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/20">
+            <h3 id="page-title" class="font-display font-bold text-gray-800 dark:text-white text-lg">Tüm Rezervasyonlar</h3>
+            <button onclick="location.reload();" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition"><span class="material-icons-outlined text-lg">refresh</span></button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto">
+
+            <div id="tab-all" class="tab-content">
+                @if (Model.AllReservations.Count == 0)
+                {
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">event_busy</span><p>Kayıt bulunamadı.</p>
+                    </div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.AllReservations)
+                        {
+                            @RenderReservationItem(item)
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div id="tab-pending" class="tab-content hidden">
+                @if (Model.PendingReservations.Count == 0)
+                {
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">hourglass_disabled</span><p>Bekleyen kayıt yok.</p>
+                    </div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.PendingReservations)
+                        {
+                            @RenderReservationItem(item)
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div id="tab-approved" class="tab-content hidden">
+                @if (Model.ApprovedReservations.Count == 0)
+                {
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">event_busy</span><p>Onaylanan kayıt yok.</p>
+                    </div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.ApprovedReservations)
+                        {
+                            @RenderReservationItem(item)
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div id="tab-cancelled" class="tab-content hidden">
+                @if (Model.CancelledReservations.Count == 0)
+                {
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">event_busy</span><p>İptal edilen kayıt yok.</p>
+                    </div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.CancelledReservations)
+                        {
+                            @RenderReservationItem(item)
+                        }
+                    </ul>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@{
+    object RenderReservationItem(ResultReservationDTO item)
+    {
+        <li class="group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer relative border-b border-gray-100 dark:border-gray-700 last:border-0"
+            onclick="openDetailModal('@item.Id', '@item.NameSurname', '@item.PhoneNumber', '@item.NumberOfPeople', '@item.ReservationAt.ToString("dd MMMM yyyy HH:mm")', '@item.Status')">
+
+            <div class="px-6 py-4 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-sm
+                            @(item.Status == true ? "bg-green-100 text-green-600" : item.Status == false ? "bg-red-100 text-red-600" : "bg-yellow-100 text-yellow-600")">
+                    <span class="material-icons-round text-2xl">
+                        @(item.Status == true ? "restaurant" : item.Status == false ? "no_meals" : "schedule")
+                    </span>
+                </div>
+                <div class="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                    <div class="md:col-span-4">
+                        <p class="font-bold text-gray-900 dark:text-white truncate">@item.NameSurname</p>
+                        <p class="text-xs text-gray-500">@item.PhoneNumber</p>
+                    </div>
+                    <div class="md:col-span-3">
+                        <div class="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-300">
+                            <span class="material-icons-outlined text-sm">groups</span>
+                            @item.NumberOfPeople Kişi
+                        </div>
+                    </div>
+                    <div class="md:col-span-5 text-right">
+                        <p class="text-sm font-medium text-gray-700 dark:text-gray-200">@item.ReservationAt.ToString("dd MMMM dddd")</p>
+                        <p class="text-xs text-primary font-bold">@item.ReservationAt.ToString("HH:mm")</p>
+                    </div>
+                </div>
+                <div class="opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-600 rounded-lg p-1 z-10 hidden md:block">
+                    <span class="material-icons-outlined text-gray-400 p-1">chevron_right</span>
+                </div>
+            </div>
+        </li>
+        return null;
+    }
+}
+
+<div id="createModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeCreateModal()"></div>
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-4 bg-primary text-white flex justify-between items-center">
+            <h3 class="text-lg font-bold">Yeni Rezervasyon Oluştur</h3>
+            <button onclick="closeCreateModal()" class="text-white/80 hover:text-white"><span class="material-icons-round">close</span></button>
+        </div>
+        <form action="/Admin/Reservation/CreateReservation" method="post">
+            <div class="p-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Ad Soyad</label>
+                    <input type="text" name="NameSurname" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Telefon</label>
+                        <input type="text" name="PhoneNumber" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Kişi Sayısı</label>
+                        <input type="text" name="NumberOfPeople" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tarih ve Saat</label>
+                    <input type="datetime-local" name="ReservationAt" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3 border-t border-gray-100 dark:border-gray-700">
+                <button type="button" onclick="closeCreateModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary text-white shadow-md text-sm hover:bg-primary-dark">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="detailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeDetailModal()"></div>
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden transform transition-all">
+        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/20">
+            <div>
+                <h3 id="detail_Name" class="text-lg font-bold text-gray-900 dark:text-white"></h3>
+                <p id="detail_Phone" class="text-sm text-gray-500 dark:text-gray-400"></p>
+            </div>
+            <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600"><span class="material-icons-round">close</span></button>
+        </div>
+        <div class="p-6 space-y-4">
+            <div class="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl">
+                <span class="material-icons-outlined text-blue-600 text-2xl">event</span>
+                <div>
+                    <p class="text-xs text-blue-600 dark:text-blue-400 font-bold uppercase">Rezervasyon Tarihi</p>
+                    <p id="detail_Date" class="font-bold text-gray-800 dark:text-white text-lg"></p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-xl">
+                <span class="material-icons-outlined text-purple-600 text-2xl">groups</span>
+                <div>
+                    <p class="text-xs text-purple-600 dark:text-purple-400 font-bold uppercase">Kişi Sayısı</p>
+                    <p id="detail_People" class="font-bold text-gray-800 dark:text-white text-lg"></p>
+                </div>
+            </div>
+            <div id="detail_StatusArea" class="text-center py-2"></div>
+        </div>
+        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex flex-col gap-2 border-t border-gray-100 dark:border-gray-700">
+            <div class="grid grid-cols-2 gap-3">
+                <a id="btn_Approve" href="#" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold shadow-md shadow-green-200 transition">
+                    <span class="material-icons-outlined text-sm">check</span> Onayla
+                </a>
+                <a id="btn_Cancel" href="#" class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 text-white font-semibold shadow-md shadow-red-200 transition">
+                    <span class="material-icons-outlined text-sm">block</span> İptal Et
+                </a>
+            </div>
+            <a id="btn_Delete" href="#" class="text-center text-gray-400 hover:text-red-500 text-sm mt-2 transition">Kaydı Sil</a>
+        </div>
+    </div>
+</div>
+
+<script>
+     function switchTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById('tab-' + tabName).classList.remove('hidden');
+
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('bg-blue-50', 'text-primary', 'dark:bg-blue-900/20', 'dark:text-blue-300');
+            btn.classList.add('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-50', 'dark:hover:bg-gray-800');
+        });
+
+        const activeBtn = document.getElementById('btn-' + tabName);
+        activeBtn.classList.remove('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-50', 'dark:hover:bg-gray-800');
+        activeBtn.classList.add('bg-blue-50', 'text-primary', 'dark:bg-blue-900/20', 'dark:text-blue-300');
+
+        const titles = { 'all': 'Tüm Rezervasyonlar', 'pending': 'Bekleyen Rezervasyonlar', 'approved': 'Onaylanan Rezervasyonlar', 'cancelled': 'İptal Edilen Rezervasyonlar' };
+        document.getElementById('page-title').innerText = titles[tabName];
+    }
+
+    const createModal = document.getElementById('createModal');
+    const detailModal = document.getElementById('detailModal');
+
+    function openCreateModal() { createModal.classList.remove('hidden'); }
+    function closeCreateModal() { createModal.classList.add('hidden'); }
+
+    function openDetailModal(id, name, phone, people, date, status) {
+        document.getElementById('detail_Name').innerText = name;
+        document.getElementById('detail_Phone').innerText = phone;
+        document.getElementById('detail_People').innerText = people + " Kişi";
+        document.getElementById('detail_Date').innerText = date;
+
+        const statusArea = document.getElementById('detail_StatusArea');
+        if(status === 'True') statusArea.innerHTML = '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-bold"><span class="material-icons-round text-sm">check_circle</span> Onaylandı</span>';
+        else if(status === 'False') statusArea.innerHTML = '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm font-bold"><span class="material-icons-round text-sm">cancel</span> İptal Edildi</span>';
+        else statusArea.innerHTML = '<span class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm font-bold"><span class="material-icons-round text-sm">hourglass_empty</span> Bekliyor</span>';
+
+        document.getElementById('btn_Approve').href = "/Admin/Reservation/ChangeStatus?id=" + id + "&status=true";
+        document.getElementById('btn_Cancel').href = "/Admin/Reservation/ChangeStatus?id=" + id + "&status=false";
+        document.getElementById('btn_Delete').href = "/Admin/Reservation/DeleteReservation/" + id;
+
+        detailModal.classList.remove('hidden');
+    }
+    function closeDetailModal() { detailModal.classList.add('hidden'); }
+    document.addEventListener('keydown', e => { if (e.key === "Escape") { closeCreateModal(); closeDetailModal(); } });
+</script>

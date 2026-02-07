@@ -1,6 +1,6 @@
 ﻿namespace MongoDB_RestaurantProject.Context.Entities
 {
-    public class SmtpSettings
+    public class SmtpSettings:BaseEntity
     {
         public string Host { get; set; }
         public int Port { get; set; }

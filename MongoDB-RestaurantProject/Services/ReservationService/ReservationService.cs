@@ -22,12 +22,30 @@ namespace MongoDB_RestaurantProject.Services.ReservationService
             await _mongoCollection.DeleteOneAsync(x => x.Id == id);
         }
 
+        public async Task<List<Reservation>> GetAllOrderedAsync()
+        {
+            return
+                await _mongoCollection
+                .Find(x=> true)
+                .SortByDescending(x=>x.ReservationAt)
+                .ToListAsync();
+        }
+
         public async Task<Reservation> GetByIdAsync(string id)
         {
             return
                 await _mongoCollection
                 .Find(x => x.Id == id)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Reservation>> GetByStatusAsync(bool? status)
+        {
+            var query = _mongoCollection.Find(x=>x.Status == status);
+            if (status == null)
+                return await query.SortBy(x => x.ReservationAt).ToListAsync();
+            else
+                return await query.SortByDescending(x => x.ReservationAt).ToListAsync();
         }
 
         public async Task<List<Reservation>> GetListAsync()

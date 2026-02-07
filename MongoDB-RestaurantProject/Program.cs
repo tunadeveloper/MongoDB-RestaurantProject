@@ -25,19 +25,16 @@ using MongoDB_RestaurantProject.Services.SMTPService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Mongo ayarları
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(nameof(MongoDbSettings))
 );
 
-// Mongo client
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
     return new MongoClient(settings.ConnectionString);
 });
 
-// Database
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
@@ -45,9 +42,6 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
-// Koleksiyonlar ───────────────────────────────────────────────────────────────
-
-// Hepsi için aynı patterni tek tek uyguladım
 builder.Services.AddSingleton<IMongoCollection<About>>(sp =>
 {
     var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
@@ -146,7 +140,6 @@ builder.Services.AddSingleton<IMongoCollection<Reservation>>(sp =>
     return db.GetCollection<Reservation>(opt.ReservationCollectionName);
 });
 
-// Servisler ───────────────────────────────────────────────────────────────────
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
@@ -164,7 +157,13 @@ builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
 builder.Services.AddScoped<IPromationService, PromationService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 
-// SMTP
+builder.Services.AddSingleton<IMongoCollection<SmtpSettings>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<SmtpSettings>("SmtpSettings");
+});
+
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddScoped<IMailService, MailService>();
 
@@ -174,7 +173,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
