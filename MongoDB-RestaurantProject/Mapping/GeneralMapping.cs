@@ -52,7 +52,7 @@ namespace MongoDB_RestaurantProject.Mapping
             CreateMap<Chef, ResultChefDTO>();
 
             CreateMap<CreateContactInfoDTO, ContactInfo>();
-            CreateMap<UpdateContactInfoDTO, ContactInfo>();
+            CreateMap<ContactInfo, UpdateContactInfoDTO>();
             CreateMap<ContactInfo, ResultContactInfoDTO>();
 
             CreateMap<CreateFeedbackDTO, Feedback>();

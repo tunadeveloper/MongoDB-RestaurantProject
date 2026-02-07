@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.ContactInfoService
 {
@@ -7,9 +9,10 @@ namespace MongoDB_RestaurantProject.Services.ContactInfoService
     {
         private readonly IMongoCollection<ContactInfo> _mongoCollection;
 
-        public ContactInfoService(IMongoCollection<ContactInfo> mongoCollection)
+        public ContactInfoService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection =
+                database.GetCollection<ContactInfo>(options.Value.ContactInfoCollectionName);
         }
 
         public async Task CreateAsync(ContactInfo entity)
