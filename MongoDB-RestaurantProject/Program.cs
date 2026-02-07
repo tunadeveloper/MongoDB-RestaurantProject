@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
@@ -25,16 +25,19 @@ using MongoDB_RestaurantProject.Services.SMTPService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Mongo ayarları
 builder.Services.Configure<MongoDbSettings>(
     builder.Configuration.GetSection(nameof(MongoDbSettings))
 );
 
+// Mongo client
 builder.Services.AddSingleton<IMongoClient>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
     return new MongoClient(settings.ConnectionString);
 });
 
+// Database
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
@@ -42,45 +45,108 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     return client.GetDatabase(settings.DatabaseName);
 });
 
-builder.Services.AddSingleton(sp =>
-{
-    var db = sp.GetRequiredService<IMongoDatabase>();
-    var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+// Koleksiyonlar ───────────────────────────────────────────────────────────────
 
-    return new
-    {
-        About = db.GetCollection<About>(settings.AboutCollectionName),
-        Admin = db.GetCollection<Admin>(settings.AdminCollectionName),
-        Blog = db.GetCollection<Blog>(settings.BlogCollectionName),
-        BlogComment = db.GetCollection<BlogComment>(settings.BlogCommentCollectionName),
-        Chef = db.GetCollection<Chef>(settings.ChefCollectionName),
-        ContactInfo = db.GetCollection<ContactInfo>(settings.ContactInfoCollectionName),
-        Feedback = db.GetCollection<Feedback>(settings.FeedbackCollectionName),
-        Gallery = db.GetCollection<Gallery>(settings.GalleryCollectionName),
-        Message = db.GetCollection<Message>(settings.MessageCollectionName),
-        Newsletter = db.GetCollection<Newsletter>(settings.NewsletterCollectionName),
-        Offer = db.GetCollection<Offer>(settings.OfferCollectionName),
-        ProductReview = db.GetCollection<ProductReview>(settings.ProductReviewCollectionName),
-        Promation = db.GetCollection<Promation>(settings.PromationCollectionName),
-        Reservation = db.GetCollection<Reservation>(settings.ReservationCollectionName)
-    };
+// Hepsi için aynı patterni tek tek uyguladım
+builder.Services.AddSingleton<IMongoCollection<About>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<About>(opt.AboutCollectionName);
 });
 
-builder.Services.AddSingleton<IMongoCollection<About>>(sp => sp.GetRequiredService<dynamic>().About);
-builder.Services.AddSingleton<IMongoCollection<Admin>>(sp => sp.GetRequiredService<dynamic>().Admin);
-builder.Services.AddSingleton<IMongoCollection<Blog>>(sp => sp.GetRequiredService<dynamic>().Blog);
-builder.Services.AddSingleton<IMongoCollection<BlogComment>>(sp => sp.GetRequiredService<dynamic>().BlogComment);
-builder.Services.AddSingleton<IMongoCollection<Chef>>(sp => sp.GetRequiredService<dynamic>().Chef);
-builder.Services.AddSingleton<IMongoCollection<ContactInfo>>(sp => sp.GetRequiredService<dynamic>().ContactInfo);
-builder.Services.AddSingleton<IMongoCollection<Feedback>>(sp => sp.GetRequiredService<dynamic>().Feedback);
-builder.Services.AddSingleton<IMongoCollection<Gallery>>(sp => sp.GetRequiredService<dynamic>().Gallery);
-builder.Services.AddSingleton<IMongoCollection<Message>>(sp => sp.GetRequiredService<dynamic>().Message);
-builder.Services.AddSingleton<IMongoCollection<Newsletter>>(sp => sp.GetRequiredService<dynamic>().Newsletter);
-builder.Services.AddSingleton<IMongoCollection<Offer>>(sp => sp.GetRequiredService<dynamic>().Offer);
-builder.Services.AddSingleton<IMongoCollection<ProductReview>>(sp => sp.GetRequiredService<dynamic>().ProductReview);
-builder.Services.AddSingleton<IMongoCollection<Promation>>(sp => sp.GetRequiredService<dynamic>().Promation);
-builder.Services.AddSingleton<IMongoCollection<Reservation>>(sp => sp.GetRequiredService<dynamic>().Reservation);
+builder.Services.AddSingleton<IMongoCollection<Admin>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Admin>(opt.AdminCollectionName);
+});
 
+builder.Services.AddSingleton<IMongoCollection<Blog>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Blog>(opt.BlogCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<BlogComment>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<BlogComment>(opt.BlogCommentCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Chef>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Chef>(opt.ChefCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<ContactInfo>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<ContactInfo>(opt.ContactInfoCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Feedback>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Feedback>(opt.FeedbackCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Gallery>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Gallery>(opt.GalleryCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Message>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Message>(opt.MessageCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Newsletter>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Newsletter>(opt.NewsletterCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Offer>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Offer>(opt.OfferCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<ProductReview>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<ProductReview>(opt.ProductReviewCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Promation>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Promation>(opt.PromationCollectionName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<Reservation>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<Reservation>(opt.ReservationCollectionName);
+});
+
+// Servisler ───────────────────────────────────────────────────────────────────
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
@@ -97,15 +163,18 @@ builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
 builder.Services.AddScoped<IPromationService, PromationService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+
+// SMTP
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddScoped<IMailService, MailService>();
 
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+// Middleware
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

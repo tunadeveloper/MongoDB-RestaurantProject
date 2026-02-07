@@ -4,6 +4,7 @@ using MongoDB_RestaurantProject.Areas.Admin.Models;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.MessageDTOs;
 using MongoDB_RestaurantProject.Services.MessageService;
+using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
 {
@@ -54,5 +55,12 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> ToggleFavorite(string id)
+        {
+            var message = await _messageService.GetByIdAsync(id);
+            message.IsFavorite = !message.IsFavorite;
+            await _messageService.UpdateAsync(message);
+            return RedirectToAction("Index");
+        }
     }
 }

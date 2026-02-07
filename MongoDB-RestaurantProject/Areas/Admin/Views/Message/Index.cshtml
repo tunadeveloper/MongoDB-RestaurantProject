@@ -1,5 +1,4 @@
 ﻿@using MongoDB_RestaurantProject.Areas.Admin.Models
-
 @model MessageListViewModel
 
 @{
@@ -80,14 +79,55 @@
             <div id="tab-inbox" class="tab-content">
                 @if (Model.InboxMessages.Count == 0)
                 {
-                    <div class="p-10 text-center text-gray-400">Mesaj bulunamadı.</div>
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">inbox</span>
+                        <p>Gelen kutusu boş.</p>
+                    </div>
                 }
                 else
                 {
                     <ul class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach (var item in Model.InboxMessages)
                         {
-                            @await Html.PartialAsync("_MessageItemPartial", item)
+                            <li class="group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer relative border-b border-gray-100 dark:border-gray-700 last:border-0"
+                                onclick="openDetailModal('@item.Id', '@item.NameSurname', '@item.Email', '@item.UserMessage', '@item.CreatedAt.ToString("dd MMMM yyyy HH:mm")', '@item.UserOrAdmin')">
+                                <div class="px-6 py-4 flex items-center gap-4">
+                                    <button type="button"
+                                            class="block p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                                            onclick="toggleFavorite('@item.Id', this); event.stopPropagation();">
+                                        <span class="material-icons-round text-lg transition-transform hover:scale-125
+                @(item.IsFavorite == true ? "text-yellow-400" : "text-gray-300 hover:text-yellow-400")">
+                                            @(item.IsFavorite == true ? "star" : "star_border")
+                                        </span>
+                                    </button>
+
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                                        @(string.IsNullOrEmpty(item.NameSurname) ? "?" : item.NameSurname.Substring(0, 1).ToUpper())
+                                    </div>
+                                    <div class="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                                        <div class="md:col-span-3">
+                                            <p class="text-sm text-gray-900 dark:text-white truncate @(item.IsRead == false && item.UserOrAdmin == "User" ? "font-extrabold text-primary" : "font-semibold")">
+                                                @item.NameSurname
+                                                @if (item.IsRead == false && item.UserOrAdmin == "User")
+                                                {
+                                                    <span class="inline-block w-2 h-2 rounded-full bg-primary ml-1 align-middle"></span>
+                                                }
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-7">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                                                <span class="font-medium text-gray-700 dark:text-gray-300">@item.Email</span> <span class="mx-1 text-gray-300">|</span> @item.UserMessage
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-2 text-right">
+                                            <p class="text-xs text-gray-400 whitespace-nowrap font-medium">@item.CreatedAt.ToString("dd MMM")</p>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-600 rounded-lg p-1 z-10" onclick="event.stopPropagation()">
+                                        <a href="/Admin/Message/DeleteMessage/@item.Id" class="text-gray-400 hover:text-red-600 transition-colors p-1.5 flex items-center justify-center"><span class="material-icons-outlined text-lg">delete</span></a>
+                                    </div>
+                                </div>
+                            </li>
                         }
                     </ul>
                 }
@@ -96,14 +136,50 @@
             <div id="tab-sent" class="tab-content hidden">
                 @if (Model.SentMessages.Count == 0)
                 {
-                    <div class="p-10 text-center text-gray-400">Gönderilen mesaj yok.</div>
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">send</span>
+                        <p>Gönderilen mesaj yok.</p>
+                    </div>
                 }
                 else
                 {
                     <ul class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach (var item in Model.SentMessages)
                         {
-                            @await Html.PartialAsync("_MessageItemPartial", item)
+                            <li class="group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer relative border-b border-gray-100 dark:border-gray-700 last:border-0"
+                                onclick="openDetailModal('@item.Id', '@item.NameSurname', '@item.Email', '@item.UserMessage', '@item.CreatedAt.ToString("dd MMMM yyyy HH:mm")', '@item.UserOrAdmin')">
+                                <div class="px-6 py-4 flex items-center gap-4">
+                                    <div class="shrink-0" onclick="event.stopPropagation()">
+                                        <button type="button"
+                                                class="block p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors cursor-pointer"
+                                                onclick="toggleFavorite('@item.Id', this); event.stopPropagation();">
+                                            <span class="material-icons-round text-lg transition-transform hover:scale-125
+                        @(item.IsFavorite == true ? "text-yellow-400" : "text-gray-300 hover:text-yellow-400")">
+                                                @(item.IsFavorite == true ? "star" : "star_border")
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                                        @(string.IsNullOrEmpty(item.NameSurname) ? "?" : item.NameSurname.Substring(0, 1).ToUpper())
+                                    </div>
+                                    <div class="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                                        <div class="md:col-span-3">
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">@item.NameSurname (Admin)</p>
+                                        </div>
+                                        <div class="md:col-span-7">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                                                <span class="font-medium text-gray-700 dark:text-gray-300">@item.Email</span> <span class="mx-1 text-gray-300">|</span> @item.UserMessage
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-2 text-right">
+                                            <p class="text-xs text-gray-400 whitespace-nowrap font-medium">@item.CreatedAt.ToString("dd MMM")</p>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-600 rounded-lg p-1 z-10" onclick="event.stopPropagation()">
+                                        <a href="/Admin/Message/DeleteMessage/@item.Id" class="text-gray-400 hover:text-red-600 transition-colors p-1.5 flex items-center justify-center"><span class="material-icons-outlined text-lg">delete</span></a>
+                                    </div>
+                                </div>
+                            </li>
                         }
                     </ul>
                 }
@@ -112,14 +188,48 @@
             <div id="tab-unread" class="tab-content hidden">
                 @if (Model.UnreadMessages.Count == 0)
                 {
-                    <div class="p-10 text-center text-gray-400">Okunmamış mesaj yok.</div>
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">mark_email_read</span>
+                        <p>Okunmamış mesaj yok.</p>
+                    </div>
                 }
                 else
                 {
                     <ul class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach (var item in Model.UnreadMessages)
                         {
-                            @await Html.PartialAsync("_MessageItemPartial", item)
+                            <li class="group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer relative border-b border-gray-100 dark:border-gray-700 last:border-0"
+                                onclick="openDetailModal('@item.Id', '@item.NameSurname', '@item.Email', '@item.UserMessage', '@item.CreatedAt.ToString("dd MMMM yyyy HH:mm")', '@item.UserOrAdmin')">
+                                <div class="px-6 py-4 flex items-center gap-4">
+                                    <div class="shrink-0" onclick="event.stopPropagation()">
+                                        <span class="material-icons-round text-lg @(item.IsFavorite == true ? "text-yellow-400" : "text-gray-300 hover:text-yellow-400") transition-colors">
+                                            @(item.IsFavorite == true ? "star" : "star_border")
+                                        </span>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                                        @(string.IsNullOrEmpty(item.NameSurname) ? "?" : item.NameSurname.Substring(0, 1).ToUpper())
+                                    </div>
+                                    <div class="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                                        <div class="md:col-span-3">
+                                            <p class="text-sm font-extrabold text-primary truncate">
+                                                @item.NameSurname
+                                                <span class="inline-block w-2 h-2 rounded-full bg-primary ml-1 align-middle"></span>
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-7">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                                                <span class="font-medium text-gray-700 dark:text-gray-300">@item.Email</span> <span class="mx-1 text-gray-300">|</span> @item.UserMessage
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-2 text-right">
+                                            <p class="text-xs text-gray-400 whitespace-nowrap font-medium">@item.CreatedAt.ToString("dd MMM")</p>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-600 rounded-lg p-1 z-10" onclick="event.stopPropagation()">
+                                        <a href="/Admin/Message/DeleteMessage/@item.Id" class="text-gray-400 hover:text-red-600 transition-colors p-1.5 flex items-center justify-center"><span class="material-icons-outlined text-lg">delete</span></a>
+                                    </div>
+                                </div>
+                            </li>
                         }
                     </ul>
                 }
@@ -128,14 +238,47 @@
             <div id="tab-favorites" class="tab-content hidden">
                 @if (Model.FavoriteMessages.Count == 0)
                 {
-                    <div class="p-10 text-center text-gray-400">Yıldızlı mesaj yok.</div>
+                    <div class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2 opacity-50">star_border</span>
+                        <p>Yıldızlı mesaj yok.</p>
+                    </div>
                 }
                 else
                 {
                     <ul class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach (var item in Model.FavoriteMessages)
                         {
-                            @await Html.PartialAsync("_MessageItemPartial", item)
+                            <li class="group hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors cursor-pointer relative border-b border-gray-100 dark:border-gray-700 last:border-0"
+                                onclick="openDetailModal('@item.Id', '@item.NameSurname', '@item.Email', '@item.UserMessage', '@item.CreatedAt.ToString("dd MMMM yyyy HH:mm")', '@item.UserOrAdmin')">
+                                <div class="px-6 py-4 flex items-center gap-4">
+                                    <div class="shrink-0" onclick="event.stopPropagation()">
+                                        <span class="material-icons-round text-lg text-yellow-400 transition-colors">
+                                            star
+                                        </span>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-purple-600 text-white flex items-center justify-center font-bold text-sm shrink-0 shadow-sm">
+                                        @(string.IsNullOrEmpty(item.NameSurname) ? "?" : item.NameSurname.Substring(0, 1).ToUpper())
+                                    </div>
+                                    <div class="min-w-0 flex-1 grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
+                                        <div class="md:col-span-3">
+                                            <p class="text-sm text-gray-900 dark:text-white truncate @(item.IsRead == false && item.UserOrAdmin == "User" ? "font-extrabold text-primary" : "font-semibold")">
+                                                @item.NameSurname
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-7">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400 truncate group-hover:text-gray-700 dark:group-hover:text-gray-300 transition-colors">
+                                                <span class="font-medium text-gray-700 dark:text-gray-300">@item.Email</span> <span class="mx-1 text-gray-300">|</span> @item.UserMessage
+                                            </p>
+                                        </div>
+                                        <div class="md:col-span-2 text-right">
+                                            <p class="text-xs text-gray-400 whitespace-nowrap font-medium">@item.CreatedAt.ToString("dd MMM")</p>
+                                        </div>
+                                    </div>
+                                    <div class="opacity-0 group-hover:opacity-100 transition-all duration-200 absolute right-4 top-1/2 -translate-y-1/2 bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-600 rounded-lg p-1 z-10" onclick="event.stopPropagation()">
+                                        <a href="/Admin/Message/DeleteMessage/@item.Id" class="text-gray-400 hover:text-red-600 transition-colors p-1.5 flex items-center justify-center"><span class="material-icons-outlined text-lg">delete</span></a>
+                                    </div>
+                                </div>
+                            </li>
                         }
                     </ul>
                 }
@@ -144,3 +287,139 @@
         </div>
     </div>
 </div>
+
+<div id="composeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeComposeModal()"></div>
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+
+        <div class="px-6 py-4 bg-primary text-white flex justify-between items-center">
+            <h3 class="text-lg font-bold">Yeni Mesaj Gönder</h3>
+            <button onclick="closeComposeModal()" class="text-white/80 hover:text-white"><span class="material-icons-round">close</span></button>
+        </div>
+
+        <form action="/Admin/Message/CreateMessage" method="post">
+            <div class="p-6 space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alıcı Adı</label>
+                        <input type="text" name="NameSurname" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Telefon</label>
+                        <input type="text" name="PhoneNumber" class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Alıcı Email</label>
+                    <input type="email" name="Email" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mesajınız</label>
+                    <textarea name="UserMessage" rows="6" required class="w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 px-4 focus:ring-primary focus:border-primary"></textarea>
+                </div>
+            </div>
+
+            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex justify-end gap-3 border-t border-gray-100 dark:border-gray-700">
+                <button type="button" onclick="closeComposeModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary text-white shadow-md text-sm hover:bg-primary-dark flex items-center gap-2">
+                    <span class="material-icons-outlined text-sm">send</span> Gönder
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="detailModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeDetailModal()"></div>
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-2xl rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+
+        <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-start bg-gray-50/50 dark:bg-gray-800/20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                    <span class="material-icons-outlined text-2xl">person</span>
+                </div>
+                <div>
+                    <h3 id="detail_Name" class="text-lg font-bold text-gray-900 dark:text-white"></h3>
+                    <p id="detail_Email" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p id="detail_Date" class="text-xs text-gray-400 mb-2"></p>
+                <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600"><span class="material-icons-round">close</span></button>
+            </div>
+        </div>
+
+        <div class="p-8 min-h-[200px] overflow-y-auto max-h-[50vh]">
+            <p id="detail_Message" class="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+
+        <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex justify-between items-center border-t border-gray-100 dark:border-gray-700">
+            <a id="detail_DeleteBtn" href="#" class="text-red-500 hover:text-red-700 text-sm font-medium flex items-center gap-1">
+                <span class="material-icons-outlined text-sm">delete</span> Sil
+            </a>
+            <button onclick="closeDetailModal()" class="px-5 py-2.5 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white text-sm shadow-sm hover:bg-gray-50">Kapat</button>
+        </div>
+    </div>
+</div>
+
+<script>
+        function toggleFavorite(id, btn) {
+        fetch('/Admin/Message/ToggleFavorite/' + id)
+            .then(res => {
+                if(res.ok){
+                    const icon = btn.querySelector('span');
+                    if(icon.innerText === 'star'){
+                        icon.innerText = 'star_border';
+                        icon.classList.remove('text-yellow-400');
+                        icon.classList.add('text-gray-300');
+                    } else {
+                        icon.innerText = 'star';
+                        icon.classList.remove('text-gray-300');
+                        icon.classList.add('text-yellow-400');
+                    }
+                }
+            });
+    }
+
+    function switchTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+        document.getElementById('tab-' + tabName).classList.remove('hidden');
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('bg-blue-50', 'text-primary', 'dark:bg-blue-900/20', 'dark:text-blue-300');
+            btn.classList.add('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-50', 'dark:hover:bg-gray-800');
+        });
+
+        const activeBtn = document.getElementById('btn-' + tabName);
+        activeBtn.classList.remove('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-50', 'dark:hover:bg-gray-800');
+        activeBtn.classList.add('bg-blue-50', 'text-primary', 'dark:bg-blue-900/20', 'dark:text-blue-300');
+
+        const titles = {
+            'inbox': 'Gelen Kutusu',
+            'sent': 'Gönderilen Mesajlar',
+            'unread': 'Okunmamış Mesajlar',
+            'favorites': 'Yıldızlı Mesajlar'
+        };
+        document.getElementById('page-title').innerText = titles[tabName];
+    }
+    const composeModal = document.getElementById('composeModal');
+    const detailModal = document.getElementById('detailModal');
+
+    function openComposeModal() { composeModal.classList.remove('hidden'); }
+    function closeComposeModal() { composeModal.classList.add('hidden'); }
+
+    function openDetailModal(id, name, email, msg, date, type) {
+        document.getElementById('detail_Name').innerText = name;
+        document.getElementById('detail_Email').innerText = email;
+        document.getElementById('detail_Message').innerText = msg;
+        document.getElementById('detail_Date').innerText = date;
+        document.getElementById('detail_DeleteBtn').href = "/Admin/Message/DeleteMessage/" + id;
+
+        detailModal.classList.remove('hidden');
+    }
+    function closeDetailModal() { detailModal.classList.add('hidden'); }
+    document.addEventListener('keydown', e => {
+        if (e.key === "Escape") { closeComposeModal(); closeDetailModal(); }
+    });
+</script>
