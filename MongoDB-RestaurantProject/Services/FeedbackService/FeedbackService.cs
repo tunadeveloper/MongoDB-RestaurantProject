@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.FeedbackService
 {
@@ -7,9 +9,10 @@ namespace MongoDB_RestaurantProject.Services.FeedbackService
     {
         private readonly IMongoCollection<Feedback> _mongoCollection;
 
-        public FeedbackService(IMongoCollection<Feedback> mongoCollection)
+        public FeedbackService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection = 
+                database.GetCollection<Feedback>(options.Value.FeedbackCollectionName);
         }
 
         public async Task CreateAsync(Feedback entity)
