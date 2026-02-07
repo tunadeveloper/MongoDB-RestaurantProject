@@ -1,9 +1,208 @@
 ﻿@using MongoDB_RestaurantProject.DataTransferObject.GalleryDTOs
 @model List<ResultGalleryDTO>
+
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Galeri";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Index</h1>
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 relative">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
 
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 relative z-10">
+
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800 dark:text-white font-display">
+                Galeri Yönetimi
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Web sitesindeki görselleri buradan yönetebilirsiniz.</p>
+        </div>
+
+        <button onclick="openGalleryModal()"
+                class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-primary/30 transition transform hover:scale-105 whitespace-nowrap">
+            <span class="material-icons-outlined text-lg">add_photo_alternate</span>
+            <span class="hidden sm:inline">Yeni Görsel</span>
+        </button>
+
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 relative z-10 pb-10">
+
+        @foreach (var item in Model)
+        {
+            <div class="group bg-surface-light dark:bg-card-dark rounded-3xl p-3 shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-gray-100 dark:hover:border-gray-600 flex flex-col">
+
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-3 bg-gray-100 dark:bg-gray-800">
+                    <img src="@item.ImageUrl"
+                         alt="Galeri Görseli"
+                         class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center pointer-events-none">
+                        <span class="material-icons-outlined text-white text-3xl drop-shadow-lg">visibility</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center px-2 pb-1">
+
+                    <span class="text-xs font-mono text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded truncate max-w-[150px]">
+                        ID: @item.Id
+                    </span>
+
+                    <div class="relative inline-block text-left">
+                        <button onclick="toggleMenu('@item.Id')"
+                                class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-primary transition">
+                            <span class="material-icons-outlined">more_vert</span>
+                        </button>
+
+                        <div id="menu-@item.Id"
+                             class="hidden absolute right-0 bottom-full mb-2 w-40 bg-white border border-gray-200 rounded-md shadow-xl z-50 origin-bottom-right">
+
+                            <button onclick="openUpdateModal(this)"
+                                    data-id="@item.Id"
+                                    data-image="@item.ImageUrl"
+                                    class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer text-gray-700">
+                                Düzenle
+                            </button>
+
+                            <a href="/Admin/Gallery/DeleteImage/@item.Id" class="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer text-red-600">Sil</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="galleryModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+         onclick="closeGalleryModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
+
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Yeni Görsel Ekle</h3>
+            <button onclick="closeGalleryModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <form action="/Admin/Gallery/CreateImage" method="post">
+            <div class="px-6 py-6 space-y-6">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Görsel URL</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">link</span>
+                        <input type="text" name="ImageUrl" required
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 pl-10 pr-4 focus:ring-primary focus:border-primary"
+                               placeholder="https://...">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Görselin doğrudan bağlantı adresini giriniz.</p>
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-gray-100 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-3">
+                <button type="button" onclick="closeGalleryModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-500 text-sm hover:bg-gray-200 transition">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary text-white shadow-md text-sm hover:bg-primary-dark transition">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="updateGalleryModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeUpdateModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700">
+
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Görseli Düzenle</h3>
+            <button onclick="closeUpdateModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <form action="/Admin/Gallery/UpdateImage" method="post">
+            <input type="hidden" name="Id" id="update_Id" />
+
+            <div class="px-6 py-6 space-y-6">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Görsel URL</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">link</span>
+                        <input type="text" name="ImageUrl" id="update_ImageUrl" required
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 pl-10 pr-4 focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-4 flex items-center justify-center border border-dashed border-gray-300 dark:border-gray-600">
+                    <img id="preview_Image" src="" alt="Önizleme" class="max-h-32 rounded-lg shadow-sm" />
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-gray-100 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-3">
+                <button type="button" onclick="closeUpdateModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-500 text-sm hover:bg-gray-200 transition">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary text-white shadow-md text-sm hover:bg-primary-dark transition">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const createModal = document.getElementById('galleryModal');
+
+    function openGalleryModal() {
+        createModal.classList.remove('hidden');
+    }
+
+    function closeGalleryModal() {
+        createModal.classList.add('hidden');
+    }
+    const updateModal = document.getElementById('updateGalleryModal');
+
+    function openUpdateModal(btn) {
+        const id = btn.getAttribute('data-id');
+        const img = btn.getAttribute('data-image');
+
+        document.getElementById('update_Id').value = id;
+        document.getElementById('update_ImageUrl').value = img;
+
+        document.getElementById('preview_Image').src = img;
+
+        updateModal.classList.remove('hidden');
+    }
+    document.getElementById('update_ImageUrl').addEventListener('input', function() {
+        document.getElementById('preview_Image').src = this.value;
+    });
+
+    function closeUpdateModal() {
+        updateModal.classList.add('hidden');
+    }
+    function toggleMenu(id) {
+        document.querySelectorAll('[id^="menu-"]').forEach(el => {
+            if(el.id !== "menu-" + id) el.classList.add("hidden");
+        });
+
+        const menu = document.getElementById("menu-" + id);
+        menu.classList.toggle("hidden");
+    }
+    document.addEventListener('keydown', e => {
+        if (e.key === "Escape") {
+            closeGalleryModal();
+            closeUpdateModal();
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.relative.inline-block')) {
+             document.querySelectorAll('[id^="menu-"]').forEach(el => {
+                el.classList.add("hidden");
+             });
+        }
+    });
+</script>

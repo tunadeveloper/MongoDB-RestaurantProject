@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.GalleryService
 {
@@ -7,9 +9,9 @@ namespace MongoDB_RestaurantProject.Services.GalleryService
     {
         private readonly IMongoCollection<Gallery> _mongoCollection;
 
-        public GalleryService(IMongoCollection<Gallery> mongoCollection)
+        public GalleryService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection = database.GetCollection<Gallery>(options.Value.GalleryCollectionName);
         }
 
         public async Task CreateAsync(Gallery entity)
