@@ -72,7 +72,7 @@ namespace MongoDB_RestaurantProject.Mapping
             CreateMap<Newsletter, ResultNewsletterDTO>();
 
             CreateMap<CreateOfferDTO, Offer>();
-            CreateMap<UpdateOfferDTO, Offer>();
+            CreateMap<Offer, UpdateOfferDTO>();
             CreateMap<Offer, ResultOfferDTO>();
 
             CreateMap<CreateProductReviewDTO, ProductReview>();

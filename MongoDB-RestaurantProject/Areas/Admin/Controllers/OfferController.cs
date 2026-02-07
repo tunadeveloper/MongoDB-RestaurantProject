@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.OfferDTOs;
 using MongoDB_RestaurantProject.Services.OfferService;
-using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
 {
@@ -18,11 +17,14 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> CreateOffer()
         {
             var list = await _offerService.GetListAsync();
-            var result = _mapper.Map<List<ResultOfferDTO>>(list);
-            return View(result);
+            if (list != null && list.Count > 0)
+                return RedirectToAction("UpdateOffer");
+
+            return View();
         }
 
         [HttpPost]
@@ -30,7 +32,17 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         {
             var entity = _mapper.Map<Offer>(createOfferDTO);
             await _offerService.CreateAsync(entity);
-            return RedirectToAction("Index");
+            return RedirectToAction("UpdateOffer");
+        }
+        [HttpGet]
+        public async Task<IActionResult> UpdateOffer()
+        {
+            var list = await _offerService.GetListAsync();
+            if (list == null || list.Count == 0)
+                return RedirectToAction("CreateOffer");
+            var first = list.FirstOrDefault();
+            var entity = _mapper.Map<UpdateOfferDTO>(first);
+            return View(entity);
         }
 
         [HttpPost]
@@ -38,7 +50,13 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         {
             var entity = _mapper.Map<Offer>(updateOfferDTO);
             await _offerService.UpdateAsync(entity);
-            return RedirectToAction("Index");
+            return RedirectToAction("UpdateOffer");
+        }
+
+        public async Task<IActionResult> DeleteOffer(string id)
+        {
+            await _offerService.DeleteAsync(id);
+            return RedirectToAction("CreateOffer");
         }
     }
 }

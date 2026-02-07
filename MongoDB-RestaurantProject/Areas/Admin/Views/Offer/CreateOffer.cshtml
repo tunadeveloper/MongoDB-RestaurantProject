@@ -1,0 +1,115 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.OfferDTOs
+@model CreateOfferDTO
+
+@{
+    ViewData["Title"] = "Yeni Teklif Oluştur";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 relative">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 relative z-10">
+        <div>
+            <h2 class="text-2xl font-display font-bold text-gray-900 dark:text-white">Yeni Özel Teklif</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Ana sayfada görünecek süreli kampanya veya indirimi buradan oluşturun.</p>
+        </div>
+    </div>
+
+    <form action="/Admin/Offer/CreateOffer" method="post" class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+
+        <div class="lg:col-span-2 bg-surface-light dark:bg-card-dark rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 dark:border-gray-700 space-y-6">
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <span class="material-icons-outlined text-primary text-base">title</span>
+                    Teklif Başlığı (Ürün Adı)
+                </label>
+                <input type="text" name="ProductName" required
+                       class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-colors shadow-sm"
+                       placeholder="Örn: %50 Burger İndirimi">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <span class="material-icons-outlined text-primary text-base">description</span>
+                    Açıklama
+                </label>
+                <textarea name="Description" rows="4" required
+                          class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-colors shadow-sm"
+                          placeholder="Kampanya detaylarını buraya yazınız..."></textarea>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <span class="material-icons-outlined text-primary text-base">event_available</span>
+                    Geçerlilik Süresi (Bitiş Tarihi)
+                </label>
+                <input type="datetime-local" name="RemainingTime" required id="dateInput"
+                       class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-colors shadow-sm cursor-pointer">
+                <p class="text-xs text-gray-400 mt-2 ml-1">Bu tarihten sonra teklif otomatik olarak pasif görünecektir.</p>
+            </div>
+
+        </div>
+
+        <div class="lg:col-span-1 space-y-6">
+
+            <div class="bg-surface-light dark:bg-card-dark rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+                <label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2">
+                    <span class="material-icons-outlined text-primary text-base">image</span>
+                    Görsel URL
+                </label>
+
+                <input type="text" name="ImageUrl" id="imgUrlInput" required
+                       class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary focus:border-primary transition-colors shadow-sm mb-4 text-sm"
+                       placeholder="https://...">
+
+                <div class="relative w-full aspect-video bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center group">
+                    <img id="imgPreview" src="" alt="Önizleme" class="hidden w-full h-full object-cover transition duration-500 hover:scale-105">
+
+                    <div id="imgPlaceholder" class="flex flex-col items-center text-gray-400">
+                        <span class="material-icons-outlined text-4xl mb-2">image_search</span>
+                        <span class="text-xs">Görsel Önizleme</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/30 transition transform hover:scale-[1.02] flex items-center justify-center gap-3">
+                <span class="material-icons-outlined">save</span>
+                Teklifi Yayınla
+            </button>
+
+        </div>
+    </form>
+</div>
+
+<script>
+    const imgInput = document.getElementById('imgUrlInput');
+    const imgPreview = document.getElementById('imgPreview');
+    const imgPlaceholder = document.getElementById('imgPlaceholder');
+
+    imgInput.addEventListener('input', function() {
+        const url = this.value;
+        if (url) {
+            imgPreview.src = url;
+            imgPreview.classList.remove('hidden');
+            imgPlaceholder.classList.add('hidden');
+        } else {
+            imgPreview.classList.add('hidden');
+            imgPlaceholder.classList.remove('hidden');
+        }
+    });
+
+    imgPreview.addEventListener('error', function() {
+        this.classList.add('hidden');
+        imgPlaceholder.classList.remove('hidden');
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const dateInput = document.getElementById('dateInput');
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        dateInput.min = now.toISOString().slice(0, 16);
+    });
+</script>

@@ -20,7 +20,7 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         public async Task<IActionResult> CreateContactInfo()
         {
             var list = await _contactInfoService.GetListAsync();
-            if (list != null || list.Count != 0)
+            if (list != null && list.Count > 0)
                 return RedirectToAction("UpdateContactInfo");
             return View();
         }

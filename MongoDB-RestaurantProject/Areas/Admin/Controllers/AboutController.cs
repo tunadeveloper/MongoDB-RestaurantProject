@@ -23,10 +23,9 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         public async Task<IActionResult> CreateAbout()
         {
            var list = await _aboutService.GetListAsync();
-            if(list != null || list.Count != 0)
-            {
+            if (list != null && list.Count > 0)
                 return RedirectToAction("UpdateAbout");
-            }
+
             return View();
         }
 
