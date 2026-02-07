@@ -1,0 +1,249 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.PromationDTOs
+@model List<ResultPromationDTO>
+
+@{
+    ViewData["Title"] = "Promosyonlar";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 relative min-h-screen">
+
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 relative z-10">
+
+        <div>
+            <h2 class="font-display text-3xl font-bold text-gray-900 dark:text-white">Promosyonlar</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Kampanya ve öne çıkan içeriklerinizi buradan yönetin.</p>
+        </div>
+
+        <button onclick="openCreateModal()"
+                class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-primary/30 transition transform hover:scale-105 whitespace-nowrap">
+            <span class="material-icons-outlined text-lg">add</span>
+            <span>Yeni Promosyon</span>
+        </button>
+
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-10 pb-10">
+
+        @foreach (var item in Model)
+        {
+            <div class="group bg-surface-light dark:bg-card-dark rounded-3xl p-4 shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-gray-100 dark:hover:border-gray-600 flex flex-col">
+
+                <div class="relative h-56 rounded-2xl overflow-hidden mb-5">
+                    <img src="@item.ImageUrl"
+                         alt="@item.Title"
+                         class="w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+
+                    <span class="absolute top-3 left-3 bg-white/90 dark:bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest text-primary shadow-sm">
+                        @item.Subtitle
+                    </span>
+                </div>
+
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-display text-xl font-bold text-gray-900 dark:text-white leading-tight">
+                        @item.Title
+                    </h3>
+
+                    <div class="relative inline-block text-left">
+                        <button onclick="toggleMenu('@item.Id')"
+                                class="text-gray-400 hover:text-primary transition p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <span class="material-icons-outlined">more_vert</span>
+                        </button>
+
+                        <div id="menu-@item.Id"
+                             class="hidden absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl z-50 overflow-hidden">
+
+                            <button onclick="openUpdateModal(this)"
+                                    data-id="@item.Id"
+                                    data-title="@item.Title"
+                                    data-subtitle="@item.Subtitle"
+                                    data-desc="@item.Description"
+                                    data-image="@item.ImageUrl"
+                                    class="block w-full text-left px-4 py-3 text-sm hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer text-gray-700 dark:text-gray-200 transition border-b border-gray-100 dark:border-gray-700/50">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-icons-outlined text-lg text-primary">edit</span>
+                                    <span>Düzenle</span>
+                                </div>
+                            </button>
+
+                            <a href="/Admin/Promation/DeletePromation/@item.Id"
+                               onclick="return confirm('Bu promosyonu silmek istediğinize emin misiniz?')"
+                               class="block w-full text-left px-4 py-3 text-sm hover:bg-red-50 dark:hover:bg-red-900/20 cursor-pointer text-red-600 dark:text-red-400 transition">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-icons-outlined text-lg">delete</span>
+                                    <span>Sil</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-3 leading-relaxed">
+                    @item.Description
+                </p>
+
+            </div>
+        }
+    </div>
+</div>
+
+<div id="createModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeCreateModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transform transition-all">
+
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Yeni Promosyon Ekle</h3>
+            <button onclick="closeCreateModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <form action="/Admin/Promation/CreatePromation" method="post">
+            <div class="px-6 py-6 space-y-5">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Başlık</label>
+                    <input type="text" name="Title" required
+                           class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none"
+                           placeholder="Örn: Haftanın Fırsatı">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Alt Başlık</label>
+                    <input type="text" name="Subtitle" required
+                           class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none"
+                           placeholder="Örn: %20 İndirim">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Görsel URL</label>
+                    <input type="text" name="ImageUrl" required
+                           class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none"
+                           placeholder="https://...">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Açıklama</label>
+                    <textarea name="Description" rows="4" required
+                              class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none resize-none"
+                              placeholder="Kampanya detayları..."></textarea>
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-3 rounded-b-2xl">
+                <button type="button" onclick="closeCreateModal()" class="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition text-sm font-medium">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/30 transition text-sm font-bold">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="updateModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeUpdateModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transform transition-all">
+
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Promosyonu Düzenle</h3>
+            <button onclick="closeUpdateModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <form action="/Admin/Promation/UpdatePromation" method="post">
+            <input type="hidden" name="Id" id="update_Id" />
+
+            <div class="px-6 py-6 space-y-5">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Başlık</label>
+                    <input type="text" name="Title" id="update_Title" required
+                           class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Alt Başlık</label>
+                    <input type="text" name="Subtitle" id="update_Subtitle" required
+                           class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Görsel URL</label>
+                    <input type="text" name="ImageUrl" id="update_ImageUrl" required
+                           class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1.5 text-gray-700 dark:text-gray-300">Açıklama</label>
+                    <textarea name="Description" id="update_Description" rows="4" required
+                              class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-2 focus:ring-primary/50 focus:border-primary transition outline-none resize-none"></textarea>
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-3 rounded-b-2xl">
+                <button type="button" onclick="closeUpdateModal()" class="px-5 py-2.5 rounded-xl border border-gray-300 dark:border-gray-500 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 transition text-sm font-medium">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white shadow-lg shadow-primary/30 transition text-sm font-bold">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const createModal = document.getElementById('createModal');
+    function openCreateModal() {
+        createModal.classList.remove('hidden');
+    }
+    function closeCreateModal() {
+        createModal.classList.add('hidden');
+    }
+    const updateModal = document.getElementById('updateModal');
+    function openUpdateModal(btn) {
+        const id = btn.getAttribute('data-id');
+        const title = btn.getAttribute('data-title');
+        const subtitle = btn.getAttribute('data-subtitle');
+        const desc = btn.getAttribute('data-desc');
+        const img = btn.getAttribute('data-image');
+
+        document.getElementById('update_Id').value = id;
+        document.getElementById('update_Title').value = title;
+        document.getElementById('update_Subtitle').value = subtitle;
+        document.getElementById('update_Description').value = desc;
+        document.getElementById('update_ImageUrl').value = img;
+
+        updateModal.classList.remove('hidden');
+    }
+    function closeUpdateModal() {
+        updateModal.classList.add('hidden');
+    }
+
+    function toggleMenu(id) {
+        document.querySelectorAll('[id^="menu-"]').forEach(el => {
+            if(el.id !== "menu-" + id) el.classList.add("hidden");
+        });
+
+        const menu = document.getElementById("menu-" + id);
+        menu.classList.toggle("hidden");
+    }
+    document.addEventListener('keydown', e => {
+        if (e.key === "Escape") {
+            closeCreateModal();
+            closeUpdateModal();
+            document.querySelectorAll('[id^="menu-"]').forEach(el => el.classList.add("hidden"));
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.relative.inline-block')) {
+             document.querySelectorAll('[id^="menu-"]').forEach(el => {
+                el.classList.add("hidden");
+             });
+        }
+    });
+</script>
