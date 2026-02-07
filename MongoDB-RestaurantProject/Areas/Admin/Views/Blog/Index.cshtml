@@ -1,0 +1,324 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.BlogDTOs
+@model List<ResultBlogDTO>
+
+@{
+    ViewData["Title"] = "Blog Listesi";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 relative">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 relative z-10">
+        <div>
+            <h2 class="text-2xl font-display font-bold text-gray-900 dark:text-white">Blog Listesi</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Blog içeriklerini buradan yönetebilirsiniz.</p>
+        </div>
+
+        <div class="flex gap-3 w-full md:w-auto">
+            <div class="relative flex-1 md:w-64">
+                <span class="material-icons-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+                <input type="text" placeholder="Blog ara..." class="w-full pl-9 pr-4 py-2.5 rounded-full bg-white dark:bg-card-dark border border-gray-200 dark:border-gray-700 focus:ring-2 focus:ring-primary focus:border-primary text-sm shadow-sm transition-all" />
+            </div>
+
+            <button onclick="openCreateModal()" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-primary/30 transition transform hover:scale-105 whitespace-nowrap">
+                <span class="material-icons-outlined text-lg">add</span>
+                <span class="hidden sm:inline">Yeni Blog</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-surface-light dark:bg-card-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden relative z-10">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-600 dark:text-gray-300">
+                <thead class="bg-gray-50 dark:bg-gray-800/50 text-xs uppercase font-semibold text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-700">
+                    <tr>
+                        <th class="px-6 py-5">Başlık</th>
+                        <th class="px-6 py-5">Oluşturulma</th>
+                        <th class="px-6 py-5">Yorum Sayısı</th>
+                        <th class="px-6 py-5">Blog ID</th>
+                        <th class="px-6 py-5 text-right">İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-4">
+                                    <img src="@item.ImageUrl" class="w-12 h-12 rounded-lg object-cover shadow" />
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 dark:text-white text-base">@item.Title</h4>
+                                        <span class="text-xs text-gray-400">@item.Tags?.Count Tag</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td class="px-6 py-4">
+                                @item.CreatedAt.ToString("dd.MM.yyyy")
+                            </td>
+
+                            <td class="px-6 py-4">
+                                <span class="font-semibold">@item.Comments?.Count</span>
+                            </td>
+                            <td>
+                                <span class="font-semibold">@item.Id</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex items-center justify-end gap-2">
+                                    <button onclick="openCommentModal('@item.Id')"
+                                            class="w-8 h-8 flex items-center justify-center rounded-lg text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                                            title="Yorumları Gör">
+                                        <span class="material-icons-outlined text-lg">chat</span>
+                                    </button>
+
+                                    <button onclick="openUpdateModal('@item.Id','@item.Title','@item.ImageUrl','@item.BlogDetails','@(string.Join(",", item.Tags ?? new List<string>()))')"
+                                            class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                            title="Düzenle">
+                                        <span class="material-icons-outlined text-lg">edit</span>
+                                    </button>
+
+                                    <a href="/Admin/Blog/DeleteBlog/@item.Id"
+                                       class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                                       title="Sil">
+                                        <span class="material-icons-outlined text-lg">delete</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex items-center justify-between">
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+                Toplam <span class="font-bold text-gray-900 dark:text-white">@Model?.Count</span> kayıt
+            </p>
+            <div class="flex gap-2">
+                <button class="px-3 py-1 text-xs font-medium rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" disabled>Önceki</button>
+                <button class="px-3 py-1 text-xs font-medium rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">Sonraki</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="createModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-card-dark text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-100 dark:border-gray-700">
+
+                <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/20">
+                    <h3 class="text-lg font-bold leading-6 text-gray-900 dark:text-white font-display" id="modal-title">
+                        Yeni Blog Ekle
+                    </h3>
+                    <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+
+                <form action="/Admin/Blog/CreateBlog" method="post">
+                    <div class="px-6 py-6 space-y-4">
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Başlık</label>
+                            <input type="text" name="Title"
+                                   class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Blog Detayı</label>
+                            <textarea name="BlogDetails" rows="4"
+                                      class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Görsel URL</label>
+                            <input type="text" name="ImageUrl"
+                                   class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Etiketler (Virgülle)</label>
+                            <input type="text" name="Tags"
+                                   placeholder="ör: pizza,italyan,yemek"
+                                   class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-3 px-4" />
+                        </div>
+                    </div>
+
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex flex-row-reverse gap-3 border-t border-gray-100 dark:border-gray-700">
+                        <button type="submit" class="inline-flex w-full justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-dark sm:w-auto">
+                            Kaydet
+                        </button>
+                        <button type="button" onclick="closeModal()" class="inline-flex w-full justify-center rounded-xl bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 px-5 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 sm:w-auto">
+                            İptal
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="updateModal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-900/50 dark:bg-black/70 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+        <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-card-dark text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-100 dark:border-gray-700">
+
+                <div class="px-6 py-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/20">
+                    <h3 class="text-lg font-bold leading-6 text-gray-900 dark:text-white font-display" id="modal-title">
+                        Blog Güncelle
+                    </h3>
+                    <button type="button" onclick="closeModal()" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors">
+                        <span class="material-icons-round">close</span>
+                    </button>
+                </div>
+
+                <form action="/Admin/Blog/UpdateBlog" method="post">
+                    <div class="px-6 py-6 space-y-4">
+
+                        <input type="hidden" name="Id" />
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Başlık</label>
+                            <input type="text" name="Title"
+                                   class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Blog Detayı</label>
+                            <textarea name="BlogDetails" rows="4"
+                                      class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Görsel URL</label>
+                            <input type="text" name="ImageUrl"
+                                   class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Etiketler (Virgülle)</label>
+                            <input type="text" name="Tags"
+                                   class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
+                        </div>
+
+                    </div>
+
+                    <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 flex flex-row-reverse gap-3 border-t border-gray-100 dark:border-gray-700">
+                        <button type="submit" class="inline-flex w-full justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white sm:w-auto">
+                            Kaydet
+                        </button>
+                        <button type="button" onclick="closeModal()" class="inline-flex w-full justify-center rounded-xl bg-white dark:bg-transparent border border-gray-300 dark:border-gray-600 px-5 py-2.5 text-sm font-semibold text-gray-700 dark:text-gray-300 sm:w-auto">
+                            İptal
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="commentModal" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-black/60" onclick="closeCommentModal()"></div>
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-card-dark rounded-2xl shadow-xl w-full max-w-xl p-6 relative border border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-bold mb-4 text-gray-900 dark:text-white">Yorumlar</h3>
+            <div id="commentList" class="space-y-4 max-h-96 overflow-y-auto">
+
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="closeCommentModal()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 rounded-lg">
+                    Kapat
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const createModal = document.getElementById('createModal');
+    const updateModal = document.getElementById('updateModal');
+    const commentModal = document.getElementById("commentModal");
+
+    function openCreateModal() {
+        createModal.classList.remove('hidden');
+    }
+
+    function openUpdateModal(id, title, imageUrl, blogDetails, tags) {
+        updateModal.querySelector('input[name="Id"]').value = id;
+        updateModal.querySelector('input[name="Title"]').value = title;
+        updateModal.querySelector('input[name="ImageUrl"]').value = imageUrl;
+        updateModal.querySelector('textarea[name="BlogDetails"]').value = blogDetails;
+        updateModal.querySelector('input[name="Tags"]').value = tags;
+
+        updateModal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+        createModal.classList.add('hidden');
+        updateModal.classList.add('hidden');
+    }
+
+    function closeCommentModal() {
+        commentModal.classList.add("hidden");
+    }
+    async function openCommentModal(blogId) {
+        const listDiv = document.getElementById("commentList");
+
+        listDiv.innerHTML = "<p class='text-gray-500 text-center py-4'>Yükleniyor...</p>";
+        commentModal.classList.remove("hidden");
+
+        try {
+            const response = await fetch(`/Admin/BlogComment/GetCommentsByBlog/${blogId}`);
+
+            if (!response.ok) throw new Error("Veri çekilemedi");
+
+            const data = await response.json();
+
+            if (!data || data.length === 0) {
+                listDiv.innerHTML = "<p class='text-gray-500 text-center py-4'>Bu blog için hiç yorum yok.</p>";
+                return;
+            }
+
+            listDiv.innerHTML = "";
+            data.forEach(c => {
+                listDiv.innerHTML += `
+                    <div class="p-4 border rounded-lg dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 mb-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-gray-900 dark:text-white">${c.nameSurname}</h4>
+                            <button onclick="deleteComment('${c.id}', '${blogId}')"
+                                    class="text-red-500 hover:text-red-700 text-sm font-medium transition-colors p-1 hover:bg-red-50 rounded">
+                                Sil
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">${c.email}</p>
+                        <p class="text-sm text-gray-800 dark:text-gray-200">${c.description}</p>
+                    </div>
+                `;
+            });
+
+        } catch (error) {
+            console.error(error);
+            listDiv.innerHTML = "<p class='text-red-500 text-center'>Yorumlar yüklenirken bir hata oluştu.</p>";
+        }
+    }
+
+    async function deleteComment(id, blogId) {
+        if (!confirm("Yorumu silmek istediğine emin misin?")) return;
+
+        try {
+            const response = await fetch(`/Admin/BlogComment/DeleteBlogComment/${id}`, { method: "GET" });
+            const result = await response.json();
+
+            openCommentModal(blogId);
+        } catch (error) {
+            alert("Silme işlemi sırasında hata oluştu.");
+        }
+    }
+</script>

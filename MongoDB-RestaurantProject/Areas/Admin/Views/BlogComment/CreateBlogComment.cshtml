@@ -1,0 +1,33 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.BlogCommentDTOs
+@{
+    ViewData["Title"] = "Create Blog Comment";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+@model CreateBlogCommentDTO
+<h2>Yeni Blog Yorumu Ekle</h2>
+
+<form asp-action="CreateBlogComment" method="post">
+
+    <div class="form-group mb-3">
+        <label>Blog Id</label>
+        <input type="text" name="BlogId" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Ad Soyad</label>
+        <input type="text" name="NameSurname" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Email</label>
+        <input type="email" name="Email" class="form-control" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Yorum</label>
+        <textarea name="Description" class="form-control" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+
+</form>

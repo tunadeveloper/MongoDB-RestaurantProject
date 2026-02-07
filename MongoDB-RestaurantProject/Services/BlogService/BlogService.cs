@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.BlogService
 {
@@ -7,9 +9,10 @@ namespace MongoDB_RestaurantProject.Services.BlogService
     {
         private readonly IMongoCollection<Blog> _mongoCollection;
 
-        public BlogService(IMongoCollection<Blog> mongoCollection)
+        public BlogService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection =
+                database.GetCollection<Blog>(options.Value.BlogCollectionName);
         }
 
         public async Task CreateAsync(Blog entity)

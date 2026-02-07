@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.AdminService
 {
@@ -7,9 +9,10 @@ namespace MongoDB_RestaurantProject.Services.AdminService
     {
         private readonly IMongoCollection<Admin> _mongoCollection;
 
-        public AdminService(IMongoCollection<Admin> mongoCollection)
+        public AdminService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection =
+                database.GetCollection<Admin>(options.Value.AdminCollectionName);
         }
 
         public async Task CreateAsync(Admin entity)

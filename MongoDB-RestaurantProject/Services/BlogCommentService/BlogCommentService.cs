@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.BlogCommentService
 {
@@ -7,10 +9,12 @@ namespace MongoDB_RestaurantProject.Services.BlogCommentService
     {
         private readonly IMongoCollection<BlogComment> _blogComments;
 
-        public BlogCommentService(IMongoCollection<BlogComment> blogComments)
+        public BlogCommentService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _blogComments = blogComments;
+            _blogComments =
+                database.GetCollection<BlogComment>(options.Value.BlogCommentCollectionName);
         }
+
 
         public async Task CreateAsync(BlogComment entity)
         {
@@ -28,6 +32,14 @@ namespace MongoDB_RestaurantProject.Services.BlogCommentService
                 await _blogComments
                 .Find(x => x.Id == id)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<BlogComment>> GetCommentsByBlogIdAsync(string blogId)
+        {
+            return
+                await _blogComments
+                .Find(x=>x.BlogId ==blogId)
+                .ToListAsync();
         }
 
         public async Task<List<BlogComment>> GetListAsync()
