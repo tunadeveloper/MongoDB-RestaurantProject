@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.Context.Settings;
 
 namespace MongoDB_RestaurantProject.Services.ChefService
 {
@@ -7,9 +9,10 @@ namespace MongoDB_RestaurantProject.Services.ChefService
     {
         private readonly IMongoCollection<Chef> _mongoCollection;
 
-        public ChefService(IMongoCollection<Chef> mongoCollection)
+        public ChefService(IMongoDatabase database, IOptions<MongoDbSettings> options)
         {
-            _mongoCollection = mongoCollection;
+            _mongoCollection =
+                database.GetCollection<Chef>(options.Value.ChefCollectionName);
         }
 
         public async Task CreateAsync(Chef entity)

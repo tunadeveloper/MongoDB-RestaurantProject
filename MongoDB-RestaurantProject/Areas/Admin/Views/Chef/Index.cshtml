@@ -1,0 +1,322 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.ChefDTOs
+@model List<ResultChefDTO>
+
+@{
+    ViewData["Title"] = "Şef İşlemleri";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-10 relative">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 relative z-10">
+
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white font-display">
+            Şef Listesi
+        </h2>
+
+        <button onclick="openChefModal()"
+                class="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-full font-semibold shadow-lg shadow-primary/30 transition transform hover:scale-105 whitespace-nowrap">
+            <span class="material-icons-outlined text-lg">add</span>
+            <span class="hidden sm:inline">Yeni Şef Ekle</span>
+        </button>
+
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8 relative z-10 pb-10">
+
+        @foreach (var item in Model)
+        {
+            <div class="group bg-surface-light dark:bg-card-dark rounded-3xl p-4 shadow-sm hover:shadow-xl transition duration-300 border border-transparent hover:border-gray-100 dark:hover:border-gray-600 flex flex-col">
+
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-4">
+                    <img src="@item.ImageUrl"
+                         alt="@item.NameSurname"
+                         class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+
+                    <span class="absolute top-3 right-3 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider text-primary shadow-sm">
+                        @item.PositionName
+                    </span>
+                </div>
+
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="font-display text-xl font-bold text-gray-900 dark:text-white leading-tight">
+                        @item.NameSurname
+                    </h3>
+
+                    <div class="relative inline-block text-left">
+                        <button onclick="toggleMenu('@item.Id')"
+                                class="text-gray-400 hover:text-primary transition">
+                            <span class="material-icons-outlined">more_vert</span>
+                        </button>
+
+                        <div id="menu-@item.Id"
+                             class="hidden absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-xl z-50">
+
+                            <button onclick="openUpdateModal(this)"
+                                    data-id="@item.Id"
+                                    data-namesurname="@item.NameSurname"
+                                    data-position="@item.PositionName"
+                                    data-image="@item.ImageUrl"
+                                    data-phone="@item.PhoneNumber"
+                                    data-insta="@item.InstagramUrl"
+                                    data-fb="@item.FacebookUrl"
+                                    data-linkedin="@item.LinkedInUrl"
+                                    class="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer text-gray-700">
+                                Düzenle
+                            </button>
+
+                            <a href="/Admin/Chef/DeleteChef/@item.Id" class="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer text-red-600">Sil</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <span class="material-icons-outlined text-base">phone</span>
+                    <span>@item.PhoneNumber</span>
+                </div>
+
+                <div class="mt-auto flex items-center justify-center pt-4 border-t border-gray-100 dark:border-gray-700 gap-4">
+
+                    @if (!string.IsNullOrEmpty(item.InstagramUrl))
+                    {
+                        <a href="@item.InstagramUrl" target="_blank" class="text-gray-400 hover:text-pink-600 transition transform hover:-translate-y-1">
+                            <i class="fab fa-instagram text-xl"></i> <span class="material-icons-outlined" style="font-size: 20px;">camera_alt</span>
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(item.FacebookUrl))
+                    {
+                        <a href="@item.FacebookUrl" target="_blank" class="text-gray-400 hover:text-blue-600 transition transform hover:-translate-y-1">
+                            <span class="material-icons-outlined" style="font-size: 20px;">facebook</span>
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(item.LinkedInUrl))
+                    {
+                        <a href="@item.LinkedInUrl" target="_blank" class="text-gray-400 hover:text-blue-700 transition transform hover:-translate-y-1">
+                            <span class="material-icons-outlined" style="font-size: 20px;">work</span>
+                        </a>
+                    }
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div id="chefModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+         onclick="closeChefModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-y-auto max-h-[90vh]">
+
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Yeni Şef Ekle</h3>
+            <button onclick="closeChefModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <form action="/Admin/Chef/CreateChef" method="post">
+            <div class="px-6 py-6 space-y-5">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Ad Soyad</label>
+                        <input type="text" name="NameSurname" required
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-primary focus:border-primary"
+                               placeholder="Örn: Mehmet Öz">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Pozisyon</label>
+                        <input type="text" name="PositionName" required
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-primary focus:border-primary"
+                               placeholder="Örn: Baş Aşçı">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Görsel URL</label>
+                        <input type="text" name="ImageUrl"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4"
+                               placeholder="https://...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Telefon</label>
+                        <input type="text" name="PhoneNumber"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4"
+                               placeholder="+90 555 ...">
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Sosyal Medya</p>
+
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">camera_alt</span>
+                        <input type="text" name="InstagramUrl" placeholder="Instagram Profili URL"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 pl-9 pr-4 text-sm">
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">facebook</span>
+                        <input type="text" name="FacebookUrl" placeholder="Facebook Profili URL"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 pl-9 pr-4 text-sm">
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">work</span>
+                        <input type="text" name="LinkedInUrl" placeholder="LinkedIn Profili URL"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 pl-9 pr-4 text-sm">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-gray-100 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-3">
+                <button type="button" onclick="closeChefModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-500 text-sm hover:bg-gray-200 transition">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary text-white shadow-md text-sm hover:bg-primary-dark transition">Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="updateChefModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeUpdateModal()"></div>
+
+    <div class="relative bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-y-auto max-h-[90vh]">
+
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Şefi Düzenle</h3>
+            <button onclick="closeUpdateModal()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <span class="material-icons-round">close</span>
+            </button>
+        </div>
+
+        <form action="/Admin/Chef/UpdateChef" method="post">
+            <input type="hidden" name="Id" id="update_Id" />
+
+            <div class="px-6 py-6 space-y-5">
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Ad Soyad</label>
+                        <input type="text" name="NameSurname" id="update_NameSurname" required
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-primary focus:border-primary">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Pozisyon</label>
+                        <input type="text" name="PositionName" id="update_PositionName" required
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4 focus:ring-primary focus:border-primary">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Görsel URL</label>
+                        <input type="text" name="ImageUrl" id="update_ImageUrl"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Telefon</label>
+                        <input type="text" name="PhoneNumber" id="update_PhoneNumber"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4">
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-2">
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Sosyal Medya</p>
+
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">camera_alt</span>
+                        <input type="text" name="InstagramUrl" id="update_InstagramUrl" placeholder="Instagram"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 pl-9 pr-4 text-sm">
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">facebook</span>
+                        <input type="text" name="FacebookUrl" id="update_FacebookUrl" placeholder="Facebook"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 pl-9 pr-4 text-sm">
+                    </div>
+
+                    <div class="relative">
+                        <span class="absolute left-3 top-3.5 text-gray-400 material-icons-outlined text-sm">work</span>
+                        <input type="text" name="LinkedInUrl" id="update_LinkedInUrl" placeholder="LinkedIn"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-2.5 pl-9 pr-4 text-sm">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="px-6 py-4 bg-gray-100 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600 flex justify-end gap-3">
+                <button type="button" onclick="closeUpdateModal()" class="px-5 py-2.5 rounded-lg border border-gray-300 dark:border-gray-500 text-sm hover:bg-gray-200 transition">İptal</button>
+                <button type="submit" class="px-5 py-2.5 rounded-lg bg-primary text-white shadow-md text-sm hover:bg-primary-dark transition">Güncelle</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const createModal = document.getElementById('chefModal');
+
+    function openChefModal() {
+        createModal.classList.remove('hidden');
+    }
+
+    function closeChefModal() {
+        createModal.classList.add('hidden');
+    }
+
+    const updateModal = document.getElementById('updateChefModal');
+
+    function openUpdateModal(btn) {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-namesurname');
+        const pos = btn.getAttribute('data-position');
+        const img = btn.getAttribute('data-image');
+        const phone = btn.getAttribute('data-phone');
+        const insta = btn.getAttribute('data-insta');
+        const fb = btn.getAttribute('data-fb');
+        const link = btn.getAttribute('data-linkedin');
+
+        document.getElementById('update_Id').value = id;
+        document.getElementById('update_NameSurname').value = name;
+        document.getElementById('update_PositionName').value = pos;
+        document.getElementById('update_ImageUrl').value = img;
+        document.getElementById('update_PhoneNumber').value = phone;
+        document.getElementById('update_InstagramUrl').value = insta;
+        document.getElementById('update_FacebookUrl').value = fb;
+        document.getElementById('update_LinkedInUrl').value = link;
+
+        updateModal.classList.remove('hidden');
+    }
+
+    function closeUpdateModal() {
+        updateModal.classList.add('hidden');
+    }
+
+    function toggleMenu(id) {
+        document.querySelectorAll('[id^="menu-"]').forEach(el => {
+            if(el.id !== "menu-" + id) el.classList.add("hidden");
+        });
+
+        const menu = document.getElementById("menu-" + id);
+        menu.classList.toggle("hidden");
+    }
+    document.addEventListener('keydown', e => {
+        if (e.key === "Escape") {
+            closeChefModal();
+            closeUpdateModal();
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.relative.inline-block')) {
+             document.querySelectorAll('[id^="menu-"]').forEach(el => {
+                el.classList.add("hidden");
+             });
+        }
+    });
+</script>

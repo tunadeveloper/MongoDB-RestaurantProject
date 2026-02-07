@@ -35,9 +35,9 @@ namespace MongoDB_RestaurantProject.FluentValidation
                 .When(x => !string.IsNullOrWhiteSpace(x.FacebookUrl))
                 .WithMessage("Geçerli bir Facebook URL'si giriniz.");
 
-            RuleFor(x => x.LinkedInUrlh)
+            RuleFor(x => x.LinkedInUrl)
                 .Must(url => Uri.IsWellFormedUriString(url, UriKind.Absolute))
-                .When(x => !string.IsNullOrWhiteSpace(x.LinkedInUrlh))
+                .When(x => !string.IsNullOrWhiteSpace(x.LinkedInUrl))
                 .WithMessage("Geçerli bir LinkedIn URL'si giriniz.");
         }
     }
