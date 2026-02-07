@@ -17,7 +17,13 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             _contactInfoService = contactInfoService;
             _mapper = mapper;
         }
-        public IActionResult CreateContactInfo() => View();
+        public async Task<IActionResult> CreateContactInfo()
+        {
+            var list = await _contactInfoService.GetListAsync();
+            if (list != null || list.Count != 0)
+                return RedirectToAction("UpdateContactInfo");
+            return View();
+        }
         [HttpPost]
         public async Task<IActionResult> CreateContactInfo(CreateContactInfoDTO createContactInfoDTO)
         {

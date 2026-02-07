@@ -20,7 +20,15 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             _mapper = mapper;
         }
 
-        public IActionResult CreateAbout() => View();
+        public async Task<IActionResult> CreateAbout()
+        {
+           var list = await _aboutService.GetListAsync();
+            if(list != null || list.Count != 0)
+            {
+                return RedirectToAction("UpdateAbout");
+            }
+            return View();
+        }
 
         [HttpPost]
         public async Task<IActionResult> CreateAbout(CreateAboutDTO createAboutDTO)
