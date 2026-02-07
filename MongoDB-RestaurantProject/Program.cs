@@ -21,6 +21,7 @@ using MongoDB_RestaurantProject.Services.ProductReviewService;
 using MongoDB_RestaurantProject.Services.ProductService;
 using MongoDB_RestaurantProject.Services.PromationService;
 using MongoDB_RestaurantProject.Services.ReservationService;
+using MongoDB_RestaurantProject.Services.SMTPService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -96,7 +97,9 @@ builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
 builder.Services.AddScoped<IPromationService, PromationService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IMailService, MailService>();
 
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddAutoMapper(typeof(GeneralMapping));
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddControllersWithViews();

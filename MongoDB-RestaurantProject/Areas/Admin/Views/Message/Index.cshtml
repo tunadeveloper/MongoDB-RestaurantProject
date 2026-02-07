@@ -1,0 +1,146 @@
+﻿@using MongoDB_RestaurantProject.Areas.Admin.Models
+
+@model MessageListViewModel
+
+@{
+    ViewData["Title"] = "Mesaj Kutusu";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="flex-1 overflow-hidden relative h-[calc(100vh-100px)] flex flex-col md:flex-row gap-6 p-4 md:p-6 lg:p-8">
+
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary opacity-5 dark:opacity-10 rounded-full blur-3xl pointer-events-none -z-0 transform translate-x-1/2 -translate-y-1/2"></div>
+
+    <div class="w-full md:w-64 shrink-0 flex flex-col gap-6 relative z-10">
+
+        <button onclick="openComposeModal()"
+                class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-primary/30 transition transform hover:scale-105">
+            <span class="material-icons-outlined">edit</span>
+            <span>Yeni Mesaj</span>
+        </button>
+
+        <div class="bg-surface-light dark:bg-card-dark rounded-3xl p-4 shadow-sm border border-gray-100 dark:border-gray-700">
+            <nav class="space-y-1">
+
+                <button onclick="switchTab('inbox')" id="btn-inbox" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition-colors bg-blue-50 text-primary dark:bg-blue-900/20 dark:text-blue-300">
+                    <div class="flex items-center gap-3">
+                        <span class="material-icons-outlined text-xl">inbox</span>
+                        Gelen Kutusu
+                    </div>
+                    @if (Model.InboxMessages.Count > 0)
+                    {
+                        <span class="bg-white dark:bg-gray-700 text-primary dark:text-white py-0.5 px-2 rounded-md text-xs font-bold shadow-sm">@Model.InboxMessages.Count</span>
+                    }
+                </button>
+
+                <button onclick="switchTab('sent')" id="btn-sent" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-icons-outlined text-xl">send</span>
+                        Gönderilenler
+                    </div>
+                </button>
+
+                <button onclick="switchTab('unread')" id="btn-unread" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-icons-outlined text-xl">mark_email_unread</span>
+                        Okunmamış
+                    </div>
+                    @if (Model.UnreadMessages.Count > 0)
+                    {
+                        <span class="bg-red-100 text-red-600 py-0.5 px-2 rounded-md text-xs font-bold">@Model.UnreadMessages.Count</span>
+                    }
+                </button>
+
+                <button onclick="switchTab('favorites')" id="btn-favorites" class="tab-btn w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex items-center gap-3">
+                        <span class="material-icons-outlined text-xl">star</span>
+                        Yıldızlı
+                    </div>
+                    @if (Model.FavoriteMessages.Count > 0)
+                    {
+                        <span class="bg-yellow-100 text-yellow-600 py-0.5 px-2 rounded-md text-xs font-bold">@Model.FavoriteMessages.Count</span>
+                    }
+                </button>
+
+            </nav>
+        </div>
+    </div>
+
+    <div class="flex-1 bg-surface-light dark:bg-card-dark rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 flex flex-col overflow-hidden relative z-10">
+
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/20">
+            <h3 id="page-title" class="font-display font-bold text-gray-800 dark:text-white text-lg">Gelen Kutusu</h3>
+            <div class="flex items-center gap-2 text-gray-400">
+                <button onclick="location.reload();" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition"><span class="material-icons-outlined text-lg">refresh</span></button>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto">
+
+            <div id="tab-inbox" class="tab-content">
+                @if (Model.InboxMessages.Count == 0)
+                {
+                    <div class="p-10 text-center text-gray-400">Mesaj bulunamadı.</div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.InboxMessages)
+                        {
+                            @await Html.PartialAsync("_MessageItemPartial", item)
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div id="tab-sent" class="tab-content hidden">
+                @if (Model.SentMessages.Count == 0)
+                {
+                    <div class="p-10 text-center text-gray-400">Gönderilen mesaj yok.</div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.SentMessages)
+                        {
+                            @await Html.PartialAsync("_MessageItemPartial", item)
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div id="tab-unread" class="tab-content hidden">
+                @if (Model.UnreadMessages.Count == 0)
+                {
+                    <div class="p-10 text-center text-gray-400">Okunmamış mesaj yok.</div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.UnreadMessages)
+                        {
+                            @await Html.PartialAsync("_MessageItemPartial", item)
+                        }
+                    </ul>
+                }
+            </div>
+
+            <div id="tab-favorites" class="tab-content hidden">
+                @if (Model.FavoriteMessages.Count == 0)
+                {
+                    <div class="p-10 text-center text-gray-400">Yıldızlı mesaj yok.</div>
+                }
+                else
+                {
+                    <ul class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach (var item in Model.FavoriteMessages)
+                        {
+                            @await Html.PartialAsync("_MessageItemPartial", item)
+                        }
+                    </ul>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
