@@ -7,6 +7,6 @@ namespace MongoDB_RestaurantProject.Services.ProductService
     public interface IProductService:IGenericService<Product>
     {
         Task<List<Product>> GetListByCategoryAsync(string categoryId);
-
+        Task<List<Product>> GetListPopularAndInStockProductAsync();
     }
 }

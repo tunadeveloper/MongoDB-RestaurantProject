@@ -20,25 +20,24 @@ namespace MongoDB_RestaurantProject.ViewComponents.Home
             _categoryService = categoryService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string categoryId)
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var mainId = await _categoryService.GetCategoryIdByNameAsync("Ana Yemekler");
-            var soupId = await _categoryService.GetCategoryIdByNameAsync("Çorbalar");
-            var cucumberId = await _categoryService.GetCategoryIdByNameAsync("Salatalar");
-            var dessertId = await _categoryService.GetCategoryIdByNameAsync("Tatlılar");
+            var categoryNames = new List<string> { "Ana Yemekler", "Çorbalar", "Salatalar", "Tatlılar" };
+            var model = new List<MenuCategoryViewModel>();
 
-            var main = await _productSerivce.GetListByCategoryAsync(mainId);
-            var soup = await _productSerivce.GetListByCategoryAsync(soupId);
-            var cucumber = await _productSerivce.GetListByCategoryAsync(cucumberId);
-            var dessert = await _productSerivce.GetListByCategoryAsync(dessertId);
-
-            var model = new HomeMenuViewModel
+            foreach(var item in categoryNames)
             {
-                Main = _mapper.Map<List<ResultProductDTO>>(main),
-                Cucumber = _mapper.Map<List<ResultProductDTO>>(cucumber),
-                Dessert = _mapper.Map<List<ResultProductDTO>>(dessert),
-                Soup = _mapper.Map<List<ResultProductDTO>>(soup)
-            };
+                var categoryId = await _categoryService.GetCategoryIdByNameAsync(item);
+                if (!string.IsNullOrEmpty(categoryId))
+                {
+                    var products = await _productSerivce.GetListByCategoryAsync(categoryId);
+                    model.Add(new MenuCategoryViewModel
+                    {
+                        CategoryName = item,
+                        Products = _mapper.Map<List<ResultProductDTO>>(products.Take(4))
+                    });
+                }
+            }
 
             return View(model);
         }

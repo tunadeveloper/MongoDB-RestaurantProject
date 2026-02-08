@@ -46,6 +46,14 @@ namespace MongoDB_RestaurantProject.Services.ProductService
                 .ToListAsync();
         }
 
+        public async Task<List<Product>> GetListPopularAndInStockProductAsync()
+        {
+            return
+               await _mongoCollection
+               .Find(x=>x.IsPopular == true && x.IsAvailable == true)
+               .ToListAsync();
+        }
+
         public async Task UpdateAsync(Product entity)
         {
             var filter = Builders<Product>.Filter.Eq(x => x.Id, entity.Id);

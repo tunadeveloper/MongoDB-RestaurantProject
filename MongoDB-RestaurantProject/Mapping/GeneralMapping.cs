@@ -72,9 +72,9 @@ namespace MongoDB_RestaurantProject.Mapping
             CreateMap<UpdateNewsletterDTO, Newsletter>();
             CreateMap<Newsletter, ResultNewsletterDTO>();
 
-            CreateMap<CreateOfferDTO, Offer>();
-            CreateMap<Offer, UpdateOfferDTO>();
-            CreateMap<Offer, ResultOfferDTO>();
+            CreateMap<Offer, CreateOfferDTO>().ReverseMap();
+            CreateMap<Offer, UpdateOfferDTO>().ReverseMap();
+            CreateMap<Offer, ResultOfferDTO>().ReverseMap();
 
             CreateMap<CreateProductReviewDTO, ProductReview>();
             CreateMap<UpdateProductReviewDTO, ProductReview>();
