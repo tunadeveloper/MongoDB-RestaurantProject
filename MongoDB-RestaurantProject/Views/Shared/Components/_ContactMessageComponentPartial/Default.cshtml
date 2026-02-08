@@ -1,0 +1,59 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.MessageDTOs
+@model CreateMessageDTO
+
+<div class="contact-style-one-area default-padding overflow-hidden">
+    <div class="container">
+        <div class="row align-center">
+            <div class="col-lg-12">
+                <div class="contact-form-style-one">
+                    <div class="heading text-center">
+                        <h5 class="sub-title">İletişimde Kalın</h5>
+                        <h2 class="heading">Bize Mesaj Gönderin</h2>
+                    </div>
+
+                    <form action="/Message/SendMessage/" method="POST">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <input class="form-control" id="NameSurname" asp-for="NameSurname" placeholder="Ad Soyad" type="text" required>
+                                    <span class="alert-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input class="form-control" id="Email" asp-for="Email" placeholder="E-posta*" type="email" required>
+                                    <span class="alert-error"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <input class="form-control" id="PhoneNumber" asp-for="PhoneNumber" placeholder="Telefon" type="text">
+                                    <span class="alert-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group comments">
+                                    <textarea class="form-control" id="UserMessage" asp-for="UserMessage" placeholder="Mesajınız *" rows="4" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="submit">
+                                    <i class="fa fa-paper-plane"></i> Mesajı Gönder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 alert-notification">
+                            <div id="message" class="alert-msg"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

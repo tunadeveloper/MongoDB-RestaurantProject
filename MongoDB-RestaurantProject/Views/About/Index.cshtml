@@ -1,0 +1,109 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.AboutDTOs
+@model ResultAboutDTO
+@{
+    ViewData["Title"] = "Hakkımızda";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="breadcrumb-area bg-cover text-center text-light" style="background-image: url(/source/assets/img/shape/11.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <br /><br />
+                <h1>Hakkımızda</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                    <li>Hakkımızda</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="about-style-one-area default-padding">
+    <div class="container">
+        <div class="row align-center">
+            <div class="col-lg-6">
+                <div class="thumb-style-one">
+                    <img class="wow fadeInUp" src="@Model.ImageUrl" alt="Görsel Bulunamadı">
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="about-style-one-info">
+                    <h4 class="sub-heading">Hikayemiz</h4>
+                    <h2 class="title split-text">@Model.Title</h2>
+                    <div class="content mt-50">
+                        <p class="split-text">
+                            @Model.Description
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="brand-area overflow-hidden default-padding bg-dark text-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="brand-heaidng mb-50">
+                    <h3>DÜNYA ÇAPINDA 5 BİN+ MUTLU SPONSOR </h3>
+                </div>
+                <div class="brand-style-one-carousel swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="assets/img/brand/1.png" alt="Marka">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="assets/img/brand/2.png" alt="Marka">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="assets/img/brand/3.png" alt="Marka">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="assets/img/brand/4.png" alt="Marka">
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="assets/img/brand/5.png" alt="Marka">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="fun-fact-style-one-area default-padding">
+    <div class="container">
+        <div class="row align-center">
+            <div class="col-lg-6">
+                <div class="fun-fact-style-one-items">
+                    <h2 class="split-text">Gerçek tariflerin lezzetini deneyimleyin</h2>
+                    <div class="fun-fact-style-one-content">
+                        <div class="fun-fact">
+                            <div class="counter">
+                                <div class="timer" data-to="98" data-speed="2000">98</div>
+                                <div class="operator">K</div>
+                            </div>
+                            <span class="medium">Günlük Sipariş</span>
+                        </div>
+                        <div class="fun-fact">
+                            <div class="counter">
+                                <div class="timer" data-to="5" data-speed="2000">100</div>
+                                <div class="operator">+</div>
+                            </div>
+                            <span class="medium">Menü & Yemekler</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 offset-lg-1">
+                <div class="thumb">
+                    <img class="wow fadeInRight" src="/source/assets/img/illustration/16.png" alt="Görsel Bulunamadı">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Component.InvokeAsync("_HomeChefComponentPartial")
+@await Component.InvokeAsync("_HomeFeedbackComponentPartial")

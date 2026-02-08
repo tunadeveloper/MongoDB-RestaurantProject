@@ -1,0 +1,32 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.DataTransferObject.MessageDTOs;
+using MongoDB_RestaurantProject.Services.MessageService;
+using System.Threading.Tasks;
+
+namespace MongoDB_RestaurantProject.Controllers
+{
+    public class MessageController : Controller
+    {
+        private readonly IMessageService _messageService;
+        private readonly IMapper _mapper;
+        public MessageController(IMessageService messageService, IMapper mapper)
+        {
+            _messageService = messageService;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(CreateMessageDTO createMessageDTO)
+        {
+            createMessageDTO.CreatedAt = DateTime.Now;
+            createMessageDTO.UserOrAdmin = "User";
+            createMessageDTO.IsRead = false;
+            createMessageDTO.IsFavorite = false;
+            var entity = _mapper.Map<Message>(createMessageDTO);
+            await _messageService.CreateAsync(entity);
+            return RedirectToAction("Index", "Contact");
+        }
+    }
+}
