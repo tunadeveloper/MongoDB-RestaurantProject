@@ -1,4 +1,6 @@
-﻿<div class="gallery-style-two-area default-padding">
+﻿@using MongoDB_RestaurantProject.DataTransferObject.GalleryDTOs
+@model List<ResultGalleryDTO>
+<div class="gallery-style-two-area default-padding">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
@@ -13,67 +15,20 @@
         <div class="row">
             <div class="gallery-content-items">
                 <div id="portfolio-grid" class="gallery-items colums-3">
-
-                    <!-- Single Item -->
-                    <div class="pf-item wow fadeInUp">
-                        <div class="gallery-style-one">
-                            <div class="item">
-                                <a href="/source/assets/img/portfolio/2.jpg" class="popup-gallery">
-                                    <img src="/source/assets/img/portfolio/2.jpg" alt="Image Not Found">
-                                    <i class="fas fa-eye"></i>
-                                </a>
+                    @foreach(var item in Model)
+                    {
+                        <div class="pf-item wow fadeInUp">
+                            <div class="gallery-style-one">
+                                <div class="item">
+                                    <a href="@item.ImageUrl" class="popup-gallery">
+                                        <img src="@item.ImageUrl" alt="Image Not Found">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- End Single Item -->
-                    <!-- Single Item -->
-                    <div class="pf-item wow fadeInUp">
-                        <div class="gallery-style-one">
-                            <div class="item">
-                                <a href="/source/assets/img/portfolio/1.jpg" class="popup-gallery">
-                                    <img src="/source/assets/img/portfolio/1.jpg" alt="Image Not Found">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Item -->
-                    <!-- Single Item -->
-                    <div class="pf-item wow fadeInUp">
-                        <div class="gallery-style-one">
-                            <div class="item">
-                                <a href="/source/assets/img/portfolio/5.jpg" class="popup-gallery">
-                                    <img src="/source/assets/img/portfolio/5.jpg" alt="Image Not Found">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Item -->
-                    <!-- Single Item -->
-                    <div class="pf-item wow fadeInUp">
-                        <div class="gallery-style-one">
-                            <div class="item">
-                                <a href="/source/assets/img/portfolio/6.jpg" class="popup-gallery">
-                                    <img src="/source/assets/img/portfolio/6.jpg" alt="Image Not Found">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Item -->
-                    <!-- Single Item -->
-                    <div class="pf-item wow fadeInUp">
-                        <div class="gallery-style-one">
-                            <div class="item">
-                                <a href="/source/assets/img/portfolio/3.jpg" class="popup-gallery">
-                                    <img src="/source/assets/img/portfolio/3.jpg" alt="Image Not Found">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- End Single Item -->
+                    }
+                   
                 </div>
             </div>
         </div>

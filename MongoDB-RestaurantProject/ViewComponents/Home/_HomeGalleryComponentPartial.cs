@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB_RestaurantProject.DataTransferObject.GalleryDTOs;
 using MongoDB_RestaurantProject.Services.GalleryService;
+using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.ViewComponents.Home
 {
@@ -14,9 +16,11 @@ namespace MongoDB_RestaurantProject.ViewComponents.Home
             _mapper = mapper;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View();
+            var list = await _galleryService.GetListAsync();
+            var result = _mapper.Map<List<ResultGalleryDTO>>(list);
+            return View(result);
         }
     }
 }

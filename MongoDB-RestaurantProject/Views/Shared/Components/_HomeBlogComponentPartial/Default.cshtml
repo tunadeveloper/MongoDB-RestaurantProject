@@ -1,89 +1,44 @@
-﻿<div class="blog-area home-blog default-padding bottom-less">
+﻿@using MongoDB_RestaurantProject.DataTransferObject.BlogDTOs
+@model List<ResultBlogDTO>
+<div class="blog-area home-blog default-padding bottom-less">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
                 <div class="site-heading text-center">
-                    <h4 class="sub-title">News & Blog</h4>
-                    <h2 class="title split-text">Our Latest News & Blog</h2>
+                    <h4 class="sub-title">Haberler ve Blog</h4>
+                    <h2 class="title split-text">En Son Haberler ve Blog Yazılarımız</h2>
                 </div>
             </div>
         </div>
         <div class="row">
-            <!-- Single Item -->
-            <div class="col-xl-4 col-md-6 mb-30">
-                <div class="home-blog-style-one-item wow fadeInUp">
-                    <div class="thumb">
-                        <img src="/source/assets/img/blog/1.jpg" alt="Image not Found">
-                        <ul class="blog-meta">
-                            <li>
-                                <a href="#">Burger</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="content">
-                        <div class="info">
-                            <h4 class="post-title">
-                                <a href="blog-single-with-sidebar.html">Announcing if attachment resolution sentiments at the projection.</a>
-                            </h4>
-                            <ul class="meta-tags">
-                                <li>18 March, 2024</li>
-                                <li><a href="#">Md Sohag</a></li>
+            @foreach(var item in Model)
+            {
+                <div class="col-xl-4 col-md-6 mb-30">
+                    <div class="home-blog-style-one-item wow fadeInUp">
+                        <div class="thumb">
+                            <img src="@item.ImageUrl" alt="Image not Found">
+                            <ul class="blog-meta">
+                                <li>
+                                    <a href="#">@item.CreatedAt.ToString("dd MMMM yyyy")</a>
+                                </li>
                             </ul>
+                        </div>
+                        <div class="content">
+                            <div class="info">
+                                <h4 class="post-title">
+                                    <a href="blog-single-with-sidebar.html">@item.Title</a>
+                                </h4>
+                                <ul class="meta-tags">
+                                    @foreach(var tags in item.Tags)
+                                    {
+                                        <li>@tags</li>
+                                    }
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- End Single Item -->
-            <!-- Single Item -->
-            <div class="col-xl-4 col-md-6 mb-30">
-                <div class="home-blog-style-one-item wow fadeInUp" data-wow-delay="200ms">
-                    <div class="thumb">
-                        <img src="/source/assets/img/blog/2.jpg" alt="Image not Found">
-                        <ul class="blog-meta">
-                            <li>
-                                <a href="#">Food</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="content">
-                        <div class="info">
-                            <h4 class="post-title">
-                                <a href="blog-single-with-sidebar.html">This prefabricated passive are comfortable highly sustainable</a>
-                            </h4>
-                            <ul class="meta-tags">
-                                <li>25 April, 2024</li>
-                                <li><a href="#">Md Sohag</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Item -->
-            <!-- Single Item -->
-            <div class="col-xl-4 col-md-6 mb-30">
-                <div class="home-blog-style-one-item wow fadeInUp" data-wow-delay="400ms">
-                    <div class="thumb">
-                        <img src="/source/assets/img/blog/4.jpg" alt="Image not Found">
-                        <ul class="blog-meta">
-                            <li>
-                                <a href="#">Pizza</a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="content">
-                        <div class="info">
-                            <h4 class="post-title">
-                                <a href="blog-single-with-sidebar.html">Minuter him own clothes but observe country at the maintaining.</a>
-                            </h4>
-                            <ul class="meta-tags">
-                                <li>15 June, 2024</li>
-                                <li><a href="#">Md Sohag</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- End Single Item -->
+            }
         </div>
     </div>
 </div>
