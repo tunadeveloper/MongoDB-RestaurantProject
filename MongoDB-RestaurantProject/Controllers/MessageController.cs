@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.MessageDTOs;
@@ -10,11 +11,13 @@ namespace MongoDB_RestaurantProject.Controllers
     public class MessageController : Controller
     {
         private readonly IMessageService _messageService;
+        private readonly IValidator<Message> _validator;
         private readonly IMapper _mapper;
-        public MessageController(IMessageService messageService, IMapper mapper)
+        public MessageController(IMessageService messageService, IMapper mapper, IValidator<Message> validator)
         {
             _messageService = messageService;
             _mapper = mapper;
+            _validator = validator;
         }
 
         [HttpPost]

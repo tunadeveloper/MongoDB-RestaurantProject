@@ -39,7 +39,8 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>İsim Soyisim</label>
-                                    <input class="form-control" name="NameSurname" placeholder="Adınız Soyadınız" type="text" required>
+                                    <input class="form-control" name="NameSurname" placeholder="Adınız Soyadınız" type="text">
+                                    <span asp-validation-for="NameSurname" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -47,7 +48,8 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="phone">Telefon Numarası</label>
-                                    <input class="form-control" id="phone" name="PhoneNumber" placeholder="05XX XXX XX XX" type="text" required>
+                                    <input class="form-control" id="phone" name="PhoneNumber" placeholder="05XX XXX XX XX" type="text">
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -111,6 +113,7 @@
                                 </div>
                             </div>
                         </div>
+                        <br />
                         <div class="row">
                             <div class="col-lg-12">
                                 <button type="submit" name="submit" id="submit">
