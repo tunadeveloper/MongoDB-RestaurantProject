@@ -1,9 +1,126 @@
 ﻿@using MongoDB_RestaurantProject.DataTransferObject.ReservationDTOs
 @model CreateReservationDTO
 @{
-    ViewData["Title"] = "CreateReservation";
+    ViewData["Title"] = "Rezervasyon Oluştur";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-<h1>CreateReservation</h1>
+<div class="breadcrumb-area bg-cover text-center text-light" style="background-image: url(/source/assets/img/shape/11.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <br /><br />
+                <h1>Online Rezervasyon</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#"><i class="fas fa-home"></i> Ana Sayfa</a></li>
+                    <li>Rezervasyon</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="reservation-style-one-area default-padding">
+    <div class="container">
+        <div class="reservation-style-one-items bg-dark text-light wow fadeInUp">
+            <div class="row">
+                <div class="col-xl-6 col-lg-5 reservation-thumb">
+                    <img src="/source/assets/img/thumb/3.jpg" alt="Görsel Bulunamadı">
+                    <div class="icon">
+                        <img src="/source/assets/img/icon/1.png" alt="Görsel Bulunamadı">
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-7 reservation-info">
+                    <h4 class="sub-heading">Rezervasyon Yapın</h4>
+                    <h2 class="title">Eşsiz Bir Akşam Yemeği</h2>
+
+                    <form action="/Reservation/CreateReservation" method="post">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>İsim Soyisim</label>
+                                    <input class="form-control" name="NameSurname" placeholder="Adınız Soyadınız" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="phone">Telefon Numarası</label>
+                                    <input class="form-control" id="phone" name="PhoneNumber" placeholder="05XX XXX XX XX" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="subject">Kişi Sayısı</label>
+                                    <select name="NumberOfPeople" class="form-control">
+                                        <option value="1">1 Kişi</option>
+                                        <option value="2">2 Kişi</option>
+                                        <option value="3">3 Kişi</option>
+                                        <option value="4">4 Kişi</option>
+                                        <option value="5">5 Kişi</option>
+                                        <option value="6">6 Kişi</option>
+                                        <option value="7">7 Kişi</option>
+                                        <option value="8">8+ Kişi (Kalabalık Grup)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="date">Tarih</label>
+
+                                    <div class="input-group date date-picker-one">
+                                        <input type="text" class="form-control" id="date" name="resDate" placeholder="Tarih Seçiniz" required>
+                                        <span class="input-group-addon"><i class="fas fa-calendar-alt"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="time">Saat</label>
+                                    <select id="time" name="resTime" class="form-control">
+                                        <option value="10:00">10:00</option>
+                                        <option value="11:00">11:00</option>
+                                        <option value="12:00">12:00</option>
+                                        <option value="13:00">13:00</option>
+                                        <option value="13:30">13:30</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="14:30">14:30</option>
+                                        <option value="15:00">15:00</option>
+                                        <option value="15:30">15:30</option>
+                                        <option value="16:00">16:00</option>
+                                        <option value="16:30">16:30</option>
+                                        <option value="17:00">17:00</option>
+                                        <option value="17:30">17:30</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="18:30">18:30</option>
+                                        <option value="19:00">19:00</option>
+                                        <option value="19:30">19:30</option>
+                                        <option value="20:00">20:00</option>
+                                        <option value="20:30">20:30</option>
+                                        <option value="21:00">21:00</option>
+                                        <option value="21:30">21:30</option>
+                                        <option value="22:00">22:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <button type="submit" name="submit" id="submit">
+                                    Rezervasyonu Tamamla
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

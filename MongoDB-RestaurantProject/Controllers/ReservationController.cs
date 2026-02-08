@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.ReservationDTOs;
 using MongoDB_RestaurantProject.Services.ReservationService;
+using Org.BouncyCastle.Ocsp;
 using System.Threading.Tasks;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
@@ -20,8 +22,14 @@ namespace MongoDB_RestaurantProject.Controllers
         public IActionResult CreateReservation()=>View();
 
         [HttpPost]
-        public async Task<IActionResult> CreateReservation(CreateReservationDTO createReservationDTO)
+        public async Task<IActionResult> CreateReservation(CreateReservationDTO createReservationDTO, string resDate, string resTime)
         {
+            string combinedDateTimeString = $"{resDate} {resTime}";
+            if (DateTime.TryParse(combinedDateTimeString, out DateTime combinedDateTime))
+            {
+                createReservationDTO.ReservationAt = combinedDateTime;
+            }
+            createReservationDTO.Status = null;
             var entity = _mapper.Map<Reservation>(createReservationDTO);
             await _reservationService.CreateAsync(entity);
             return View();
