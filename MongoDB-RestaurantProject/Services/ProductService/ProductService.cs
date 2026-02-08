@@ -2,6 +2,8 @@
 using MongoDB.Driver;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.Context.Settings;
+using MongoDB_RestaurantProject.DataTransferObject.ProductDTOs;
+using MongoDB_RestaurantProject.Models;
 
 namespace MongoDB_RestaurantProject.Services.ProductService
 {
