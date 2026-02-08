@@ -1,0 +1,192 @@
+﻿@model HomeMenuViewModel
+
+<div class="menu-style-five-area default-padding bg-cover" style="background-image: url(/source/assets/img/shape/3.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-5 col-lg-6">
+                <div class="thumb-style-two">
+                    <div class="fun-fact-style-two mb-40">
+                        <div class="icon">
+                            <img src="/source/assets/img/icon/2.png" alt="Image Not Found">
+                        </div>
+                        <div class="fun-fact">
+                            <div class="counter">
+                                <div class="timer" data-to="500" data-speed="2000">500</div>
+                                <div class="operator">+</div>
+                            </div>
+                            <span class="medium">Menü ve Yemekler</span>
+                        </div>
+                    </div>
+                    <img class="wow fadeInLeft" src="https://mshanken.imgix.net/wso/Restaurants/250329_02_25.jpg" alt="Image Not Found">
+                </div>
+            </div>
+
+            <div class="col-xl-6 offset-xl-1 col-lg-6">
+                <h4 class="sub-heading">Yemek Ürünlerİ</h4>
+                <h2 class="title split-text">Başlangıçlar ve Ana Yemekler</h2>
+
+                <div class="food-menu-style-five-items mt-65 wow fadeInUp">
+
+                    <ul class="nav nav-tabs food-menu-five-navs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="tab_1" data-bs-toggle="tab" data-bs-target="#tabs_1" type="button" role="tab">Ana Yemekler</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab_2" data-bs-toggle="tab" data-bs-target="#tabs_2" type="button" role="tab">Çorbalar</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab_3" data-bs-toggle="tab" data-bs-target="#tabs_3" type="button" role="tab">Salatalıklar</button>
+                        </li>
+
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="tab_4" data-bs-toggle="tab" data-bs-target="#tabs_4" type="button" role="tab">Tatlılar</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="tabs_1" role="tabpanel">
+                            <ul class="meal-type">
+                                <li>Yarım</li>
+                                <li>Tam</li>
+                            </ul>
+
+                            <ul class="meal-items style-two">
+                                @foreach (var item in Model.Main.Take(4))
+                                {
+                                    <li>
+                                        <div class="content">
+                                            <div class="top">
+                                                <div class="title">
+                                                    <h4>@item.ProductName</h4>
+                                                </div>
+                                                <div class="price">
+                                                    <span>@item.PriceHalf ₺</span>
+                                                    <span>@item.PriceFull ₺</span>
+                                                </div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="left">
+                                                    <p>@item.Description</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p>Ücretsiz İçecek</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="tabs_2" role="tabpanel">
+                            <ul class="meal-type">
+                                <li>Half</li>
+                                <li>Full</li>
+                            </ul>
+
+                            <ul class="meal-items style-two">
+                                @foreach (var item in Model.Soup.Take(4))
+                                {
+                                    <li>
+                                        <div class="content">
+                                            <div class="top">
+                                                <div class="title">
+                                                    <h4>@item.ProductName</h4>
+                                                </div>
+                                                <div class="price">
+                                                    <span>@item.PriceHalf ₺</span>
+                                                    <span>@item.PriceFull ₺</span>
+                                                </div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="left">
+                                                    <p>@item.Description</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p>Ücretsiz İçecek</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="tabs_3" role="tabpanel">
+                            <ul class="meal-type">
+                                <li>Half</li>
+                                <li>Full</li>
+                            </ul>
+
+                            <ul class="meal-items style-two">
+                                @foreach (var item in Model.Cucumber.Take(4))
+                                {
+                                    <li>
+                                        <div class="content">
+                                            <div class="top">
+                                                <div class="title">
+                                                    <h4>@item.ProductName</h4>
+                                                </div>
+                                                <div class="price">
+                                                    <span>@item.PriceHalf ₺</span>
+                                                    <span>@item.PriceFull ₺</span>
+                                                </div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="left">
+                                                    <p>@item.Description</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p>Ücretsiz İçecek</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="tabs_4" role="tabpanel">
+                            <ul class="meal-type">
+                                <li>Half</li>
+                                <li>Full</li>
+                            </ul>
+
+                            <ul class="meal-items style-two">
+                                @foreach (var item in Model.Dessert.Take(4))
+                                {
+                                    <li>
+                                        <div class="content">
+                                            <div class="top">
+                                                <div class="title">
+                                                    <h4>@item.ProductName</h4>
+                                                </div>
+                                                <div class="price">
+                                                    <span>@item.PriceHalf ₺</span>
+                                                    <span>@item.PriceFull ₺</span>
+                                                </div>
+                                            </div>
+                                            <div class="bottom">
+                                                <div class="left">
+                                                    <p>@item.Description</p>
+                                                </div>
+                                                <div class="right">
+                                                    <p>Ücretsiz İçecek</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                    </div> 
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace MongoDB_RestaurantProject.ViewComponents
+namespace MongoDB_RestaurantProject.ViewComponents.Home
 {
-    public class _UserLayoutScriptComponentPartial:ViewComponent
+    public class _HomeBlogComponentPartial : ViewComponent
     {
         public IViewComponentResult Invoke()
         {

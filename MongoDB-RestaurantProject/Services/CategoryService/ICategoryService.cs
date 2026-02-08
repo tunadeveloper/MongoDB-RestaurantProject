@@ -5,5 +5,6 @@ namespace MongoDB_RestaurantProject.Services.CategoryService
 {
     public interface ICategoryService:IGenericService<Category>
     {
+        Task<string> GetCategoryIdByNameAsync(string categoryName);
     }
 }

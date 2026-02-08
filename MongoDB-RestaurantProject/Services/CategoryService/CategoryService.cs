@@ -33,6 +33,16 @@ namespace MongoDB_RestaurantProject.Services.GenericService
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<string> GetCategoryIdByNameAsync(string categoryName)
+        {
+            var category = await _mongoCollection
+                .Find(x => x.CategoryName == categoryName)
+                .FirstOrDefaultAsync();
+
+            return category.Id;
+        }
+
+
         public async Task<List<Category>> GetListAsync()
         {
             return await _mongoCollection
