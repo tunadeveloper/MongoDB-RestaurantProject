@@ -16,6 +16,7 @@ using MongoDB_RestaurantProject.DataTransferObject.ProductDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.ProductReviewDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.PromationDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.ReservationDTOs;
+using MongoDB_RestaurantProject.DataTransferObject.SmtpDTOs;
 
 namespace MongoDB_RestaurantProject.Mapping
 {
@@ -86,6 +87,10 @@ namespace MongoDB_RestaurantProject.Mapping
             CreateMap<CreateReservationDTO, Reservation>();
             CreateMap<UpdateReservationDTO, Reservation>();
             CreateMap<Reservation, ResultReservationDTO>();
+
+            CreateMap<CreateSmtpDTO, SmtpSettings>();
+            CreateMap<UpdateSmtpDTO, SmtpSettings>();
+            CreateMap<SmtpSettings, ResultSmtpDTO>();
         }
     }
 }

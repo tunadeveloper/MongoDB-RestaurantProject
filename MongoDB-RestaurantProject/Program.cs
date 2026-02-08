@@ -140,6 +140,13 @@ builder.Services.AddSingleton<IMongoCollection<Reservation>>(sp =>
     return db.GetCollection<Reservation>(opt.ReservationCollectionName);
 });
 
+builder.Services.AddSingleton<IMongoCollection<SmtpSettings>>(sp =>
+{
+    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    var db = sp.GetRequiredService<IMongoDatabase>();
+    return db.GetCollection<SmtpSettings>("SmtpSettings");
+});
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAboutService, AboutService>();
@@ -156,13 +163,6 @@ builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IProductReviewService, ProductReviewService>();
 builder.Services.AddScoped<IPromationService, PromationService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
-
-builder.Services.AddSingleton<IMongoCollection<SmtpSettings>>(sp =>
-{
-    var opt = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
-    var db = sp.GetRequiredService<IMongoDatabase>();
-    return db.GetCollection<SmtpSettings>("SmtpSettings");
-});
 
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddScoped<IMailService, MailService>();

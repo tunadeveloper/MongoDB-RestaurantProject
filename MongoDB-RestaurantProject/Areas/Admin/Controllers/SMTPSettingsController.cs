@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
+using MongoDB_RestaurantProject.DataTransferObject.SmtpDTOs;
 using MongoDB_RestaurantProject.Services.SMTPService;
 using System.Threading.Tasks;
 
@@ -27,9 +28,10 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSMTP(SmtpSettings smtpSettings)
+        public async Task<IActionResult> CreateSMTP(CreateSmtpDTO createSmtpDTO)
         {
-            await _mailService.CreateAsync(smtpSettings);
+            var entity = _mapper.Map<SmtpSettings>(createSmtpDTO);
+            await _mailService.CreateAsync(entity);
             return RedirectToAction("UpdateSMTP");
         }
 
@@ -44,9 +46,10 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateSMTP(SmtpSettings smtpSettings)
+        public async Task<IActionResult> UpdateSMTP(UpdateSmtpDTO updateSmtpDTO)
         {
-            await _mailService.UpdateAsync(smtpSettings);
+            var entity = _mapper.Map<SmtpSettings>(updateSmtpDTO);
+            await _mailService.UpdateAsync(entity);
             return RedirectToAction("UpdateSMTP");
         }
     }
