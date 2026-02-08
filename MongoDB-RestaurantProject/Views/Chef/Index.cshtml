@@ -1,0 +1,59 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.ChefDTOs
+@model List<ResultChefDTO>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+<div class="breadcrumb-area bg-cover text-center text-light" style="background-image: url(/source/assets/img/shape/11.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <br /><br />
+                <h1>Restoran Şefleri</h1>
+                <ul class="breadcrumb">
+                    <li><a href="#"><i class="fas fa-home"></i> Anasayfa</a></li>
+                    <li>Şefler</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="chef-style-one-area default-padding bottom-less">
+        <div class="container">
+            <div class="row">
+            @foreach(var item in Model)
+            {
+                <div class="col-lg-3 col-md-6 chef-one-single mb-30">
+                    <div class="chef-style-one-item wow fadeInUp">
+                        <div class="thumb">
+                            <img src="@item.ImageUrl" alt="Image Not Found">
+                            <ul class="chef-one-social">
+                                <li class="facebook">
+                                    <a href="@item.FacebookUrl">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                </li>
+                                <li class="twitter">
+                                    <a href="@item.InstagramUrl">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                </li>
+                                <li class="twitter">
+                                    <a href="@item.LinkedInUrl">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="info">
+                            <h4><a href="#">@item.NameSurname</a></h4>
+                            <span>@item.PositionName</span>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            </div>
+        </div>
+    </div>
