@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.DataTransferObject.AboutDTOs;
 using MongoDB_RestaurantProject.Services.AboutService;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
+    [AllowAnonymous]
     public class AboutController : Controller
     {
         private readonly IAboutService _aboutService;

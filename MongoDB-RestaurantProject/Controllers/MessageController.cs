@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.MessageDTOs;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
+    [AllowAnonymous]
     public class MessageController : Controller
     {
         private readonly IMessageService _messageService;

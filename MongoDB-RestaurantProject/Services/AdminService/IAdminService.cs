@@ -5,5 +5,6 @@ namespace MongoDB_RestaurantProject.Services.AdminService
 {
     public interface IAdminService:IGenericService<Admin>
     {
+        Task<Admin> LoginAsync(string email, string password);
     }
 }

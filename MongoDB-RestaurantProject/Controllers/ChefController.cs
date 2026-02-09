@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.DataTransferObject.ChefDTOs;
 using MongoDB_RestaurantProject.Services.ChefService;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
+    [AllowAnonymous]
     public class ChefController : Controller
     {
         private readonly IChefService _chefService;

@@ -41,6 +41,20 @@ namespace MongoDB_RestaurantProject.Services.AdminService
                 .ToListAsync();
         }
 
+        public async Task<Admin> LoginAsync(string email, string password)
+        {
+            var admin = await _mongoCollection
+                .Find(x=>x.Email==email && x.Password==password)
+                .FirstOrDefaultAsync();
+
+            if (admin == null)
+                return null;
+            if (admin.Password != password)
+                return null;
+
+            return admin;
+        }
+
         public async Task UpdateAsync(Admin entity)
         {
            var filter = Builders<Admin>.Filter.Eq(x=>x.Id, entity.Id);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.CategoryDTOs;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
+    [AllowAnonymous]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;

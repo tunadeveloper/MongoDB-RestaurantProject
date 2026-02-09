@@ -9,6 +9,7 @@ using MongoDB_RestaurantProject.DataTransferObject.ChefDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.ContactInfoDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.FeedbackDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.GalleryDTOs;
+using MongoDB_RestaurantProject.DataTransferObject.LoginDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.MessageDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.NewsletterDTOs;
 using MongoDB_RestaurantProject.DataTransferObject.OfferDTOs;
@@ -24,73 +25,74 @@ namespace MongoDB_RestaurantProject.Mapping
     {
         public GeneralMapping()
         {
-            CreateMap<CreateCategoryDTO, Category>();
-            CreateMap<UpdateCategoryDTO, Category>();
-            CreateMap<Category, ResultCategoryDTO>();
+            CreateMap<About, ResultAboutDTO>().ReverseMap();
+            CreateMap<About, CreateAboutDTO>().ReverseMap();
+            CreateMap<About, UpdateAboutDTO>().ReverseMap();
 
-            CreateMap<CreateBlogDTO, Blog>();
-            CreateMap<UpdateBlogDTO, Blog>();
-            CreateMap<Blog, ResultBlogDTO>();
+            CreateMap<Admin, ResultAdminDTO>().ReverseMap();
+            CreateMap<Admin, CreateAdminDTO>().ReverseMap();
+            CreateMap<Admin, UpdateAdminDTO>().ReverseMap();
+            CreateMap<Admin, LoginDTO>().ReverseMap();
 
-            CreateMap<CreateProductDTO, Product>();
-            CreateMap<UpdateProductDTO, Product>();
-            CreateMap<Product, ResultProductDTO>().ReverseMap();
+            CreateMap<Blog, ResultBlogDTO>().ReverseMap();
+            CreateMap<Blog, CreateBlogDTO>().ReverseMap();
+            CreateMap<Blog, UpdateBlogDTO>().ReverseMap();
 
-            CreateMap<CreateAboutDTO, About>();
-            CreateMap<About, UpdateAboutDTO>();
-            CreateMap<About, ResultAboutDTO>();
+            CreateMap<BlogComment, ResultBlogCommentDTO>().ReverseMap();
+            CreateMap<BlogComment, CreateBlogCommentDTO>().ReverseMap();
+            CreateMap<BlogComment, UpdateBlogCommentDTO>().ReverseMap();
 
-            CreateMap<CreateAdminDTO, Admin>();
-            CreateMap<UpdateAdminDTO, Admin>();
-            CreateMap<Admin, ResultAdminDTO>();
+            CreateMap<Category, ResultCategoryDTO>().ReverseMap();
+            CreateMap<Category, CreateCategoryDTO>().ReverseMap();
+            CreateMap<Category, UpdateCategoryDTO>().ReverseMap();
 
-            CreateMap<CreateBlogCommentDTO, BlogComment>();
-            CreateMap<UpdateBlogCommentDTO, BlogComment>();
-            CreateMap<BlogComment, ResultBlogCommentDTO>();
+            CreateMap<Chef, ResultChefDTO>().ReverseMap();
+            CreateMap<Chef, CreateChefDTO>().ReverseMap();
+            CreateMap<Chef, UpdateChefDTO>().ReverseMap();
 
-            CreateMap<CreateChefDTO, Chef>();
-            CreateMap<UpdateChefDTO, Chef>();
-            CreateMap<Chef, ResultChefDTO>();
+            CreateMap<ContactInfo, ResultContactInfoDTO>().ReverseMap();
+            CreateMap<ContactInfo, CreateContactInfoDTO>().ReverseMap();
+            CreateMap<ContactInfo, UpdateContactInfoDTO>().ReverseMap();
 
-            CreateMap<CreateContactInfoDTO, ContactInfo>();
-            CreateMap<ContactInfo, UpdateContactInfoDTO>();
-            CreateMap<ContactInfo, ResultContactInfoDTO>();
+            CreateMap<Feedback, ResultFeedbackDTO>().ReverseMap();
+            CreateMap<Feedback, CreateFeedbackDTO>().ReverseMap();
+            CreateMap<Feedback, UpdateFeedbackDTO>().ReverseMap();
 
-            CreateMap<CreateFeedbackDTO, Feedback>();
-            CreateMap<UpdateFeedbackDTO, Feedback>();
-            CreateMap<Feedback, ResultFeedbackDTO>();
+            CreateMap<Gallery, ResultGalleryDTO>().ReverseMap();
+            CreateMap<Gallery, CreateGalleryDTO>().ReverseMap();
+            CreateMap<Gallery, UpdateGalleryDTO>().ReverseMap();
 
-            CreateMap<CreateGalleryDTO, Gallery>();
-            CreateMap<UpdateGalleryDTO, Gallery>();
-            CreateMap<Gallery, ResultGalleryDTO>();
+            CreateMap<Message, ResultMessageDTO>().ReverseMap();
+            CreateMap<Message, CreateMessageDTO>().ReverseMap();
+            CreateMap<Message, UpdateMessageDTO>().ReverseMap();
 
-            CreateMap<CreateMessageDTO, Message>();
-            CreateMap<UpdateMessageDTO, Message>();
-            CreateMap<Message, ResultMessageDTO>();
+            CreateMap<Newsletter, ResultNewsletterDTO>().ReverseMap();
+            CreateMap<Newsletter, CreateNewsletterDTO>().ReverseMap();
+            CreateMap<Newsletter, UpdateNewsletterDTO>().ReverseMap();
 
-            CreateMap<CreateNewsletterDTO, Newsletter>();
-            CreateMap<UpdateNewsletterDTO, Newsletter>();
-            CreateMap<Newsletter, ResultNewsletterDTO>();
-
+            CreateMap<Offer, ResultOfferDTO>().ReverseMap();
             CreateMap<Offer, CreateOfferDTO>().ReverseMap();
             CreateMap<Offer, UpdateOfferDTO>().ReverseMap();
-            CreateMap<Offer, ResultOfferDTO>().ReverseMap();
 
-            CreateMap<CreateProductReviewDTO, ProductReview>();
-            CreateMap<UpdateProductReviewDTO, ProductReview>();
-            CreateMap<ProductReview, ResultProductReviewDTO>();
+            CreateMap<Product, ResultProductDTO>().ReverseMap();
+            CreateMap<Product, CreateProductDTO>().ReverseMap();
+            CreateMap<Product, UpdateProductDTO>().ReverseMap();
 
-            CreateMap<CreatePromationDTO, Promation>();
-            CreateMap<UpdatePromationDTO, Promation>();
-            CreateMap<Promation, ResultPromationDTO>();
+            CreateMap<ProductReview, ResultProductReviewDTO>().ReverseMap();
+            CreateMap<ProductReview, CreateProductReviewDTO>().ReverseMap();
+            CreateMap<ProductReview, UpdateProductReviewDTO>().ReverseMap();
+  
+            CreateMap<Promation, ResultPromationDTO>().ReverseMap();
+            CreateMap<Promation, CreatePromationDTO>().ReverseMap();
+            CreateMap<Promation, UpdatePromationDTO>().ReverseMap();
 
-            CreateMap<CreateReservationDTO, Reservation>();
-            CreateMap<UpdateReservationDTO, Reservation>();
-            CreateMap<Reservation, ResultReservationDTO>();
+            CreateMap<Reservation, ResultReservationDTO>().ReverseMap();
+            CreateMap<Reservation, CreateReservationDTO>().ReverseMap();
+            CreateMap<Reservation, UpdateReservationDTO>().ReverseMap();
 
-            CreateMap<CreateSmtpDTO, SmtpSettings>();
-            CreateMap<UpdateSmtpDTO, SmtpSettings>();
-            CreateMap<SmtpSettings, ResultSmtpDTO>();
+            CreateMap<SmtpSettings, ResultSmtpDTO>().ReverseMap();
+            CreateMap<SmtpSettings, CreateSmtpDTO>().ReverseMap();
+            CreateMap<SmtpSettings, UpdateSmtpDTO>().ReverseMap();
         }
     }
 }

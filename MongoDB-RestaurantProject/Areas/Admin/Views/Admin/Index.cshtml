@@ -75,7 +75,7 @@
 
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button onclick="openUpdateModal('@item.Id', '@item.Username', '@item.Email', '@item.IsVerified')"
+                                    <button onclick="openUpdateModal('@item.Id', '@item.Username', '@item.Password', '@item.Email', '@item.IsVerified')"
                                             class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-primary hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
                                             title="Düzenle">
                                         <span class="material-icons-outlined text-lg">edit</span>
@@ -131,7 +131,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Şifre</label>
-                        <input name="Password" type="password" class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
+                        <input name="Password" type="text" class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
                     </div>
                 </div>
 
@@ -160,12 +160,11 @@
             <form action="/Admin/Admin/UpdateAdmin" method="post">
                 <div class="px-6 py-6 space-y-4">
                     <input type="hidden" name="Id" />
-
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Kullanıcı Adı</label>
                         <input name="Username" id="uUsername" class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
                     </div>
-
+                        <input type="hidden" name="Password" id="uPassword" class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
                         <input name="Email" id="uEmail" type="email" class="block w-full rounded-xl border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white py-3 px-4" />
@@ -197,9 +196,10 @@
         createModal.classList.remove('hidden');
     }
 
-    function openUpdateModal(id, username, email, verified) {
+    function openUpdateModal(id, username, password, email, verified) {
         updateModal.querySelector('input[name="Id"]').value = id;
         document.getElementById("uUsername").value = username;
+        document.getElementById("uPassword").value = password;
         document.getElementById("uEmail").value = email;
         document.getElementById("uVerified").value = verified.toLowerCase();
         updateModal.classList.remove('hidden');

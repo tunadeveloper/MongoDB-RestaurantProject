@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB_RestaurantProject.Context.Entities;
 using MongoDB_RestaurantProject.DataTransferObject.ReservationDTOs;
@@ -10,6 +11,7 @@ using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
+    [AllowAnonymous]
     public class ReservationController : Controller
     {
         private readonly IReservationService _reservationService;
