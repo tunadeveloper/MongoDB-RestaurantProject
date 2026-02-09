@@ -1,0 +1,35 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.BlogCommentDTOs
+@model CreateBlogCommentDTO
+<div class="comments-form">
+    <div class="title">
+        <h3>Yorum Yap</h3>
+    </div>
+    <form asp-action="CreateComment" asp-controller="Blog" method="post" class="contact-comments">
+        <input type="hidden" name="BlogId" value="@Model.BlogId" />
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input name="NameSurname" class="form-control" placeholder="Adınız Soyadınız *" required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input name="Email" class="form-control" placeholder="Email *" type="email" required>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group comments">
+                    <textarea name="Description" class="form-control" placeholder="Yorumunuz" required></textarea>
+                </div>
+                <div class="form-group full-width submit">
+                    <button class="btn btn-theme effect" type="submit">Yorumu Gönder</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
