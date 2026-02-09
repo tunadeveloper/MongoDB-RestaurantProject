@@ -7,5 +7,6 @@
         public string Comment { get; set; }
         public int Star { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string ProductId { get; set; }
     }
 }

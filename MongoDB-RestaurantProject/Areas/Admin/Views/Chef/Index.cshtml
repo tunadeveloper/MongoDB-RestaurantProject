@@ -56,6 +56,8 @@
                             <button onclick="openUpdateModal(this)"
                                     data-id="@item.Id"
                                     data-namesurname="@item.NameSurname"
+                                    data-email="@item.Email"
+                                    data-address="@item.Address"
                                     data-position="@item.PositionName"
                                     data-image="@item.ImageUrl"
                                     data-phone="@item.PhoneNumber"
@@ -149,7 +151,20 @@
                                placeholder="+90 555 ...">
                     </div>
                 </div>
-
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">E-Posta Adresi</label>
+                        <input type="text" name="Email"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4"
+                               placeholder="tunahan@gmail.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Adres</label>
+                        <input type="text" name="Address"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4"
+                               placeholder="Istanbul/Türkiye">
+                    </div>
+                </div>
                 <div class="space-y-3 pt-2">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Sosyal Medya</p>
 
@@ -225,7 +240,20 @@
                                class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4">
                     </div>
                 </div>
-
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">E-Posta Adresi</label>
+                        <input type="text" name="Email" id="update_Email"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4"
+                               placeholder="tunahan@gmail.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Adres</label>
+                        <input type="text" name="Address" id="update_Address"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white py-3 px-4"
+                               placeholder="Istanbul/Türkiye">
+                    </div>
+                </div>
                 <div class="space-y-3 pt-2">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Sosyal Medya</p>
 
@@ -274,6 +302,8 @@
     function openUpdateModal(btn) {
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-namesurname');
+        const email = btn.getAttribute('data-email');
+        const address = btn.getAttribute('data-address');
         const pos = btn.getAttribute('data-position');
         const img = btn.getAttribute('data-image');
         const phone = btn.getAttribute('data-phone');
@@ -283,6 +313,8 @@
 
         document.getElementById('update_Id').value = id;
         document.getElementById('update_NameSurname').value = name;
+        document.getElementById('update_Email').value = email;
+        document.getElementById('update_Address').value = address;
         document.getElementById('update_PositionName').value = pos;
         document.getElementById('update_ImageUrl').value = img;
         document.getElementById('update_PhoneNumber').value = phone;

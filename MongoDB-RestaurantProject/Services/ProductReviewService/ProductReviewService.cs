@@ -30,6 +30,14 @@ namespace MongoDB_RestaurantProject.Services.ProductReviewService
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<List<ProductReview>> GetByProductIdAsync(string id)
+        {
+            return
+                await _mongoCollection
+                .Find(x=>x.ProductId == id)
+                .ToListAsync();
+        }
+
         public async Task<List<ProductReview>> GetListAsync()
         {
             return

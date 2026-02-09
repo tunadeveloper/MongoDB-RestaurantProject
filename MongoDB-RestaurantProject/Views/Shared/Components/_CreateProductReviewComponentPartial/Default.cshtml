@@ -1,0 +1,58 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.ProductReviewDTOs
+@model CreateProductReviewDTO
+<link href="/source/StyleSheet.css" rel="stylesheet">
+<div class="review-form mt-5">
+    <h4>Bir Değerlendirme Yazın</h4>
+    <p>E-posta adresiniz yayınlanmayacaktır. Gerekli alanlar işaretlenmiştir *</p>
+
+<form asp-action="CreateReview" asp-controller="Product" method="post">
+
+        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+
+        <div class="row">
+            <div class="col-lg-12 mb-3">
+                <label>Puanınız *</label>
+                <div class="rating-wrapper">
+                    <input type="radio" id="star5" name="Star" value="5" required /><label for="star5" title="5 Yıldız"></label>
+                    <input type="radio" id="star4" name="Star" value="4" /><label for="star4" title="4 Yıldız"></label>
+                    <input type="radio" id="star3" name="Star" value="3" /><label for="star3" title="3 Yıldız"></label>
+                    <input type="radio" id="star2" name="Star" value="2" /><label for="star2" title="2 Yıldız"></label>
+                    <input type="radio" id="star1" name="Star" value="1" /><label for="star1" title="1 Yıldız"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-group comments">
+                    <label>Yorumunuz *</label>
+                    <textarea class="form-control" name="Comment" placeholder="Düşüncelerinizi buraya yazın..." rows="4" required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Adınız Soyadınız *</label>
+                    <input class="form-control" name="NameSurname" placeholder="Ad Soyad" type="text" required>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>E-posta Adresiniz *</label>
+                    <input class="form-control" name="Email" placeholder="ornek@email.com" type="email" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <button type="submit" class="btn btn-theme secondary btn-md">
+                    Yorumu Gönder
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>

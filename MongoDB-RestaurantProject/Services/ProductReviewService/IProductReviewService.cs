@@ -5,5 +5,6 @@ namespace MongoDB_RestaurantProject.Services.ProductReviewService
 {
     public interface IProductReviewService:IGenericService<ProductReview>
     {
+        Task<List<ProductReview>> GetByProductIdAsync(string id);
     }
 }

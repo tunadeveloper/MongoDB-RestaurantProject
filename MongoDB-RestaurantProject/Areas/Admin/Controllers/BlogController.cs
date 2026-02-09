@@ -37,7 +37,6 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             return View(blogDtos);
         }
 
-
         public async Task<IActionResult> DeleteBlog(string id)
         {
             await _blogService.DeleteAsync(id);

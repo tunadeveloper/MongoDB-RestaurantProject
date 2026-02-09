@@ -1,0 +1,27 @@
+﻿.rating-wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+    .rating-wrapper input {
+        display: none;
+    }
+
+    .rating-wrapper label {
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        margin-top: auto;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 100%;
+        transition: .3s;
+    }
+
+        .rating-wrapper input:checked ~ label,
+        .rating-wrapper label:hover,
+        .rating-wrapper label:hover ~ label {
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffb400" stroke="%23ffb400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>');
+        }

@@ -22,5 +22,12 @@ namespace MongoDB_RestaurantProject.Controllers
             var result = _mapper.Map<List<ResultChefDTO>>(list);
             return View(result);
         }
+
+        public async Task<IActionResult> ChefDetails(string id)
+        {
+            var list = await _chefService.GetByIdAsync(id);
+            var result = _mapper.Map<ResultChefDTO>(list);
+            return View(result);
+        }
     }
 }

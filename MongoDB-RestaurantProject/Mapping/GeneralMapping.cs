@@ -34,7 +34,7 @@ namespace MongoDB_RestaurantProject.Mapping
 
             CreateMap<CreateProductDTO, Product>();
             CreateMap<UpdateProductDTO, Product>();
-            CreateMap<Product, ResultProductDTO>();
+            CreateMap<Product, ResultProductDTO>().ReverseMap();
 
             CreateMap<CreateAboutDTO, About>();
             CreateMap<About, UpdateAboutDTO>();

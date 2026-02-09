@@ -1,0 +1,151 @@
+﻿@using MongoDB_RestaurantProject.DataTransferObject.BlogDTOs
+@model ResultBlogDTO
+@{
+    ViewData["Title"] = "Blog";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+<div class="breadcrumb-area bg-cover text-center text-light" style="background-image: url(/source/assets/img/shape/11.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <br /><br />
+                <h1>@Model.Title</h1>
+                <ul class="breadcrumb">
+                    <li><a href="/"><i class="fas fa-home"></i> Anasayfa</a></li>
+                    <li>Blog</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-area single full-blog default-padding">
+    <div class="container">
+        <div class="blog-items">
+            <div class="row">
+                <div class="blog-content wow fadeInUp col-lg-10 offset-lg-1 col-md-12">
+
+                    <div class="blog-style-two item">
+
+                        <div class="blog-item-box">
+
+                            <div class="thumb">
+                                <a href="#"><img src="@Model.ImageUrl" alt="Blog Görseli"></a>
+                            </div>
+
+                            <div class="info">
+
+                                <div class="meta">
+                                    <ul>
+                                        <li>
+                                            <a href="#"><i class="fas fa-calendar-alt"></i> @Model.CreatedAt.ToString("dd MMM yyyy")</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><i class="fas fa-user-circle"></i> Admin</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <p>@Html.Raw(Model.BlogDetails)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="post-tags share">
+                        <div class="tags">
+                            <h4>Etiketler:</h4>
+                            @if (Model.Tags != null)
+                            {
+                                foreach (var tag in Model.Tags)
+                                {
+                                    <a href="#">@tag</a>
+                                }
+                            }
+                        </div>
+
+                        <div class="social">
+                            <h4>Paylaş:</h4>
+                            <ul>
+                                <li>
+                                    <a class="facebook" href="#" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                                </li>
+                                <li>
+                                    <a class="twitter" href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a class="linkedin" href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="blog-comments">
+                        <div class="comments-area">
+
+                            <div class="comments-form">
+                                <div class="title">
+                                    <h3>Yorum Yap</h3>
+                                </div>
+                                <form asp-action="CreateComment" asp-controller="Blog" method="post" class="contact-comments">
+                                    <input type="hidden" name="BlogId" value="@Model.Id" />
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input name="NameSurname" class="form-control" placeholder="Adınız Soyadınız *" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input name="Email" class="form-control" placeholder="Email *" type="email" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="form-group comments">
+                                                <textarea name="Description" class="form-control" placeholder="Yorumunuz" required></textarea>
+                                            </div>
+                                            <div class="form-group full-width submit">
+                                                <button class="btn btn-theme effect" type="submit">Yorumu Gönder</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <br />
+                            <div class="comments-title">
+                                <h3>@(Model.Comments?.Count ?? 0) adet yorum bulundu.</h3>
+
+                                <div class="comments-list">
+                                    @if (Model.Comments != null && Model.Comments.Any())
+{
+                                    @foreach (var item in Model.Comments)
+                                    {
+                                        <div class="comment-item">
+                                            <div class="avatar">
+                                                <img src="/source/assets/img/team/10.jpg" alt="Avatar">
+                                            </div>
+                                            <div class="content">
+                                                <div class="title">
+                                                        <h5>@item.NameSurname</h5>
+                                                        <span>@item.CreatedAt.ToString("dd MMM yyyy")</span>
+                                                </div>
+                                                    <p>@item.Description</p>
+                                            </div>
+                                        </div>
+                                    }
+                                    }
+                                    else
+                                    {
+                                        <p>Henüz yorum yapılmamış.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
