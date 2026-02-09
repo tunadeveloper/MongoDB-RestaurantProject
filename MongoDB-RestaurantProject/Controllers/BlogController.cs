@@ -6,6 +6,7 @@ using MongoDB_RestaurantProject.DataTransferObject.BlogDTOs;
 using MongoDB_RestaurantProject.Services.BlogCommentService;
 using MongoDB_RestaurantProject.Services.BlogService;
 using System.Threading.Tasks;
+using X.PagedList.Extensions;
 
 namespace MongoDB_RestaurantProject.Controllers
 {
@@ -21,11 +22,13 @@ namespace MongoDB_RestaurantProject.Controllers
             _blogCommentService = blogCommentService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
+            int pageSize = 4;
             var list = await _blogService.GetListAsync();
             var result = _mapper.Map<List<ResultBlogDTO>>(list);
-            return View(result);
+            var pagedList = result.ToPagedList(page, pageSize);
+            return View(pagedList);
         }
 
         public async Task<IActionResult> BlogDetails(string id)

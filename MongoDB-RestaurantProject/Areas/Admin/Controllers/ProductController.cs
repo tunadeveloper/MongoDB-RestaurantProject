@@ -28,7 +28,6 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
             var list = string.IsNullOrEmpty(categoryId)
                 ? await _productService.GetListAsync()
                 : await _productService.GetListByCategoryAsync(categoryId);
-
             var result = _mapper.Map<List<ResultProductDTO>>(list);
             ViewBag.Categories = await _categoryService.GetListAsync();
             ViewBag.SelectedCategory = categoryId;
