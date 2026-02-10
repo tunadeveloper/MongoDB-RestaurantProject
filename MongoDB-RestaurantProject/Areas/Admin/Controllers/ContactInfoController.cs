@@ -48,7 +48,7 @@ namespace MongoDB_RestaurantProject.Areas.Admin.Controllers
         {
             var entity = _mapper.Map<ContactInfo>(updateContactInfoDTO);
             await _contactInfoService.UpdateAsync(entity);
-            return RedirectToAction("Index");
+            return RedirectToAction("UpdateContactInfo");
         }
 
     }
