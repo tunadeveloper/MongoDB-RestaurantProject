@@ -24,7 +24,7 @@ Projede modüler, genişletilebilir ve temiz bir kod yapısı hedeflenmiştir.
 
 | Kategori | Teknoloji / Kütüphane | Kullanım Amacı |
 |----------|-----------------------|----------------|
-| **Framework** | ASP.NET Core 6.0 | Ana uygulama çatısı |
+| **Framework** | ASP.NET Core 10.0 | Ana uygulama çatısı |
 | **Veritabanı** | MongoDB | NoSQL veri depolama |
 | **ORM / Desen** | Repository Pattern | Veri erişim soyutlaması |
 | **Mapping** | AutoMapper | Entity ve DTO nesne eşlemeleri |
